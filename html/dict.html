@@ -1,0 +1,39 @@
+<!DOCTYPE HTML=sr>
+<html>
+    <head>
+        <title>Речник српског језика</title>
+        <!--script src="/js/smd/jquery/dist/jquery.min.js"></script-->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" media="all" href="/css/smd/main.css">
+        <script src="/js/smd/constants.js"></script>
+        <script src="/js/smd/smd.js"></script>
+        <script src="/js/smd/dropdownbox.js"></script>
+        <script src="/js/smd/validate.js"></script>
+        <script src="/js/smd/wordmetadata.js"></script>
+    </head>
+
+    <body>
+        <h1>Речник српског језика</h1>
+        <br/>
+        <div id="findWord">
+            <p>Унесите реч коју желите да нађете (пазећи на велика и мала слова) и то:</p>
+            <ul>
+                <li>Именицу, заменицу, придев или број у номинативу</li>
+                <li>Глагол у инфинитиву (осим глагола <strong>јесам</strong>)</li>
+                <li>Прилог, предлог, везник, узвик или речцу</li>
+            </ul>
+            <label>Реч:</label>&nbsp;<input type="text" id="word"/>&nbsp;
+            <input type="hidden" id="lemma"/>
+            <input type="submit" id="btnFind" value=" Тражи " onclick="getWord()"/>
+        </div>
+        <br/>
+        <table id="tblWords"></table>
+        <br/>
+        <div id="errorMessage"></div>
+        <div id="divAdd">
+            <div id="resultMessage"></div>
+            <div id="divAddWord"></div>
+            <br/>
+        </div>
+    </body>
+</html>

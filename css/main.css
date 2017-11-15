@@ -1,0 +1,51 @@
+html, body {
+	background-color: linen;
+	font-size: 120%;
+	height: 99%;
+	width: 100%
+	margin: 10px;
+}
+h1 {
+	color: maroon;
+	text-align: center;
+}
+input, button, select {
+	font-size: 95%;
+	font-family: inherit;
+}
+
+#findWord ul {
+	vertical-align: middle;
+}
+
+
+#resultMessage {
+	color: green;
+	background: white;
+	width: 70%;
+	float: left;
+}
+
+#divAdd {
+	width: 100%;
+}
+
+#divAddWord {
+	width: 29%;
+	float: right;
+}
+
+#errorMessage {
+	color: red;
+	background: white;
+}
+
+th tr td {
+	border: 1px solid black;
+}
+
+/* Word table and its components */
+#tblWords {
+	width: 100%;
+	border: 1px solid black;
+}

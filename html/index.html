@@ -1,0 +1,147 @@
+<!DOCTYPE HTML=sr>
+<html>
+	<head>
+		<title>Језички алат - провера правописа</title>
+		<style>
+			html, body {
+   				background-color: linen;
+   				font-size: 120%;
+   				height: 99%;
+   				width: 100%;
+			}
+			h1 {
+    			color: maroon;
+    			text-align: center;
+			}
+			textarea {
+				width: 99%;
+				font-size: 130%;
+				font-family: inherit;
+			}
+			input {
+				font-size: 110%;
+				font-family: inherit;
+			}
+			#provera {
+				text-align: center;
+			}
+			.hiddenSpellError {
+			    background-color: rgba(255,0,0, 0.2);
+			    cursor: pointer;
+			}
+			.hiddenGrammarError {
+			    background-color: #fee481;
+			    cursor: pointer;
+			}
+			.hiddenSuggestion {
+			    background-color: rgb(201,205,255);
+			    cursor: pointer;
+			}
+			#feedbackMessage {
+				color: green;
+				background: white;
+			}
+			#feedbackErrorMessage {
+				color: red;
+				background: white;
+			}
+		</style>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<script type="text/javascript" src="https://www.languagetool.org/js/jquery-1.7.0.min.js"></script>
+		<script type="text/javascript" src="https://www.languagetool.org/online-check/tiny_mce/tiny_mce.js"></script>
+		<script type="text/javascript" src="https://www.languagetool.org/online-check/tiny_mce/plugins/atd-tinymce/editor_plugin2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  tinyMCE.init({
+		     mode : "textareas",
+		     plugins : "AtD,paste",
+		     paste_text_sticky : true,
+		     setup : function(ed) {
+		         ed.onInit.add(function(ed) {
+		             ed.pasteAsPlainText = true;
+		         });
+		     },
+		     /* translations: */
+		     languagetool_i18n_no_errors : {
+		         // "No errors were found.":
+		         "de-DE": "Keine Fehler gefunden.",
+		         "sr"   : "Нема грешака."
+		     },
+		     languagetool_i18n_explain : {
+		         // "Explain..." - shown if there is an URL with a detailed description:
+		         "de-DE" : "Mehr Informationen...",
+		         "sr"    : "Детаљније ..."
+		     },
+		     languagetool_i18n_ignore_once : {
+		         // "Ignore this error":
+		         "de-DE": "Hier ignorieren",
+		         "sr" : "Занемари ову грешку"
+		     },
+		     languagetool_i18n_ignore_all : {
+		         // "Ignore this kind of error":
+		         "de-DE": "Fehler dieses Typs ignorieren",
+		         "sr" : "Занемари ову врсту грешака"
+		     },
+		     languagetool_i18n_rule_implementation : {
+		         // "Rule implementation":
+		         "de-DE": "Implementierung der Regel",
+		         "sr" : "Имплементација правила"
+		     },
+
+		     languagetool_i18n_current_lang :
+		         function() { return document.checkform.lang.value; },
+		     /* The URL of your LanguageTool server.
+		        If you use your own server here and it's not running on the same domain
+		        as the text form, make sure the server gets started with '--allow-origin ...'
+		        and use 'https://your-server/v2/check' as URL: */
+		     languagetool_rpc_url                 : "https://zcs.in.rs:18081/v2/check",
+		     /* edit this file to customize how LanguageTool shows errors: */
+		     languagetool_css_url : "https://www.languagetool.org/online-check/tiny_mce/plugins/atd-tinymce/css/content.css",
+		     /* this stuff is a matter of preference: */
+		     theme                              : "advanced",
+		     theme_advanced_buttons1            : "",
+		     theme_advanced_buttons2            : "",
+		     theme_advanced_buttons3            : "",
+		     theme_advanced_toolbar_location    : "none",
+		     theme_advanced_toolbar_align       : "left",
+		     theme_advanced_statusbar_location  : "bottom",
+		     theme_advanced_path                : false,
+		     theme_advanced_resizing            : true,
+		     theme_advanced_resizing_use_cookie : false,
+		     gecko_spellcheck                   : false
+		  });
+
+		  function doit() {
+		     var langCode = document.checkform.lang.value;
+		     tinyMCE.activeEditor.execCommand("mceWritingImprovementTool", langCode);
+		  }
+
+		  function cleanFeedback() {
+		  	var feedbackMessage = document.getElementById('feedbackMessage');
+		  	feedbackMessage.innerHTML = "";
+		  }
+	  </script>
+	</head>
+
+	<body>
+		<h1>Језички алат - провера правописа</h1>
+		<br/>
+		<p>Ово је страница за проверу правописа помоћу програма <a href="http://www.languagetool.org">Језички алат</a> за српски језик. Правопис других језика можете да проверите <a href="http://www.languagetool.org">овде</a>.<br/><br/><strong>Напомена:</strong> Програм ће обрадити само текстове писане <a href="https://sr.wikipedia.org/sr-ec/Српска_ћирилица">српском ћирилицом</a> и <i>екавским</i> наречјем. Уколико је ваш текст писан такозваном „српском латиницом“ можете га претходно пресловити <a href="http://www.preslovi.re.rs/">овде</a> или <a href="http://www.preslovljavanje.com">овде</a>.</p>
+
+		<form name="checkform" action="#" method="post">
+			<p id="checktextpara">
+				<textarea id="checktext" name="text" rows="10" onfocus="cleanFeedback();">
+Унесите овде ваш текст, а затим кликните на дугме „Проверити текст“.
+				</textarea>
+			</p>
+			<div id="provera">
+				<input type="submit" name="_action_checkText" value="Проверити текст" onClick="doit(); return false;">
+			</div>
+			<input type="hidden" name="lang" value="sr" />
+			<br/>
+			<div id="feedbackErrorMessage"></div>
+			<div id="feedbackMessage"></div>
+		</form>
+	</body>
+</html>
