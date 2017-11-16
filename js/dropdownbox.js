@@ -341,8 +341,8 @@ function getResidualTypeDropDownBox(selElem, selId) {
 function getDialectDropDownBox(selElem, selId) {
 	var array = [
 		CONST_DIALECT_ALL, "оба",
-		CONST_DIALECT_EKAVIAN, "екавски",
-		CONST_DIALECT_IEKAVIAN, "ијекавски"];
+		CONST_DIALECT_EKAVIAN, "екавско",
+		CONST_DIALECT_IEKAVIAN, "ијекавско"];
 	const cssClassName = "clsDialectDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idDialect-" + selId);

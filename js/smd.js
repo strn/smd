@@ -211,6 +211,9 @@ function getWordMetaWidgets(result, index) {
     }
     var tdWordMetadata = document.createElement("td");
     tdWordMetadata.className = "clsWordMetadata";
+    var dialect = getDialectDropDownBox(result.dialect, index);
+    wordMetadata.innerHTML += ' наречје&nbsp;';
+    wordMetadata.appendChild(dialect);
     tdWordMetadata.appendChild(wordMetadata);
     return tdWordMetadata;
 }
