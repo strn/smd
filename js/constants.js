@@ -43,3 +43,18 @@ const CONST_NUMBER_PLURAL = "p";
 const CONST_DIALECT_EKAVIAN = "e";
 const CONST_DIALECT_IEKAVIAN = "i";
 const CONST_DIALECT_ALL = "";
+
+// Noun types
+const CONST_NOUN_TYPE_COMMON = "c"; //заједничка именица
+const CONST_NOUN_TYPE_PROPER = "p"; // властита именица
+const CONST_NOUN_TYPE_COLLECTIVE = "o"; // збирна именица
+const CONST_NOUN_TYPE_MASS = "m"; // градивна именица
+
+// Verb types
+const CONST_VERB_TENSE_INFINITIVE = "n"; //инфинитив
+const CONST_VERB_TENSE_PARTICIPLE = "p"; // партицип
+const CONST_VERB_TENSE_PRESENT = "r"; // презент
+const CONST_VERB_TENSE_FUTURE = "f"; // футур
+const CONST_VERB_TENSE_IMPERATIVE = "m"; // императив
+const CONST_VERB_TENSE_AORIST = "a"; // аорист
+const CONST_VERB_TENSE_IMPERFECT = "e"; // имперфект

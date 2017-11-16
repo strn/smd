@@ -14,6 +14,10 @@ input, button, select {
 	font-family: inherit;
 }
 
+table,th,td {
+	border:2px solid maroon;
+}
+
 #findWord ul {
 	vertical-align: middle;
 }
@@ -40,12 +44,14 @@ input, button, select {
 	background: white;
 }
 
-th tr td {
-	border: 1px solid black;
-}
+tr:nth-child(even) {background: linen}
+tr:nth-child(odd) {background: FLORALWHITE}
+
 
 /* Word table and its components */
 #tblWords {
 	width: 100%;
-	border: 1px solid black;
+	border-collapse: collapse;
 }
+
+

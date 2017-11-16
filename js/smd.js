@@ -10,6 +10,7 @@ function getWord() {
     var divAddWord = document.getElementById("divAddWord");
     var tblWords = document.getElementById("tblWords");
     var inpLemma = document.getElementById("lemma");
+    var divGenerate = document.getElementById("divGenerate");
 
     resultMessage.innerHTML = "", errorMessage.innerHTML = "";
 
@@ -20,19 +21,20 @@ function getWord() {
             if (res.length == 0) {
                 resultMessage.innerHTML = "Реч „" + word + "“ није нађена. Ако желите да је додате, изаберите врсту речи и кликните на дугме „Додај“.";
                 divAdd.style.display = 'block';
+                divGenerate.style.display = 'none';
                 divAddWord.innerHTML = '';
                 tblWords.innerHTML = '';
                 addAddWordWidgets(word);
             } else {
-                //resultMessage.innerHTML = this.responseText;
                 divAddWord.innerHTML = '';
                 tblWords.innerHTML = '';
                 createWordsHeader();
                 // Loop over results
                 for (var i = 0; i < res.length; i++) {
                     //console.log("res[i].wordform: " + res[i].wordform + ", res[i].lemma: " + res[i].lemma + ", res[i].msd: " + res[i].msd);
-                    createWordWidgets(res[i], i);
+                    addWordWidgets(res[i], i);
                 }
+                divGenerate.style.display = 'block';
             }
             inpLemma.value = word;
 		}
@@ -63,18 +65,27 @@ function addAddWordWidgets(word) {
     btnAddWord.id = "idBtnAddWord";
     btnAddWord.type = "submit";
     btnAddWord.value = " Додај ";
-    btnAddWord.setAttribute( "onclick", "createWordsHeader();createWordWidgets('" + word + "','" + word + "','',0);disableNewWordFields()" );
+    btnAddWord.setAttribute( "onclick", "addNonExistentWord('" + word +"')" );
     divAddWord.appendChild(btnAddWord);
 }
+
+// Add word that does not exist in database
+function addNonExistentWord(word) {
+    createWordsHeader();
+    // Get word type from main word type selector
+    var wordType = document.getElementById("idWordType-main").value;
+    result = getEmptyMSD(wordType);
+    result.wordform = word;
+    addWordWidgets(result, 0);
+    disableNewWordFields();
+    document.getElementById("divGenerate").style.display = 'block';
+}
+
 
 // Disables "Word type" and "Add" buttons so that
 // user can't change word type once he starts
 // adding new word data
 function disableNewWordFields() {
-    //var btnAddWord = document.getElementById("idBtnAddWord");
-    //btnAddWord.disabled = 'disabled';
-    //var ddbWordType = document.getElementById("idWordType-main");
-    //ddbWordType.disabled = 'disabled';
     var divAdd = document.getElementById("divAdd");
     divAdd.style.display = 'none';
 }
@@ -98,8 +109,9 @@ function createWordsHeader() {
 
 
 // Creates row representing entry from word database
-function createWordWidgets(result, index) {
+function addWordWidgets(result, index) {
     var rowTr = document.createElement("tr");
+    rowTr.id = 'idWordRow-' + index;
     rowTr.className = "clsWordRow";
 
     // Assemble row together
@@ -107,7 +119,7 @@ function createWordWidgets(result, index) {
     rowTr.appendChild( getColumnWordForm(result.wordform) );
     //rowTr.appendChild( getColumnLemma(result.lemma) );
     rowTr.appendChild( getWordMetaWidgets(result, index) );
-    rowTr.appendChild( getNavButtons() );
+    rowTr.appendChild( getNavButtons(index) );
     tblWords.appendChild( rowTr );
 }
 
@@ -205,8 +217,86 @@ function getWordMetaWidgets(result, index) {
 
 
 // Navigational buttons
-function getNavButtons() {
+function getNavButtons(index) {
+    var btn;
     var tdNavButtons = document.createElement("td");
     tdNavButtons.className = "clsColumnNavButtons";
+    var checkbox = document.createElement('input');
+    checkbox.type = "checkbox";
+    checkbox.name = "DelDb-" + index;
+    checkbox.id = "idDelDb-" + index;
+    var label = document.createElement('label')
+    label.setAttribute("for", checkbox.id);
+    label.innerHTML = 'Обрисати из базе';
+    tdNavButtons.appendChild(checkbox);
+    tdNavButtons.appendChild(label);
+    tdNavButtons.innerHTML += '<br/>';
+    var btn = document.createElement('input');
+    btn.type = 'submit';
+    btn.id = 'idBtnAdd-' + index;
+    btn.value = ' Додај ред ';
+    btn.setAttribute( 'onclick', "addWordRow(" + index + ")" );
+    tdNavButtons.appendChild(btn);
+    tdNavButtons.innerHTML += '  ';
+    var btn = document.createElement('input');
+    btn.type = 'submit';
+    btn.id = 'idBtnDel-' + index;
+    btn.value = ' Избриши ред ';
+    btn.setAttribute( 'onclick', "deleteWordRow(this)" );
+    tdNavButtons.appendChild(btn);
     return tdNavButtons;
+}
+
+// Deletes row in a word table
+function deleteWordRow(row){
+    var d = row.parentNode.parentNode.rowIndex;
+    document.getElementById('tblWords').deleteRow(d);
+}
+
+// Create new row in word table. Use current row
+// to determine word type
+function addWordRow(index) {
+    // Get word type from previous row
+    var wordType = document.getElementById("idWordType-" + index).value;
+    result = getEmptyMSD(wordType);
+    // Add lemma, thus helping operator entering text
+    result.wordform = document.getElementById("lemma").value;
+    addWordWidgets(result, index+1);
+}
+
+// Construct empty MSD (except word type)
+function getEmptyMSD(wordType) {
+    var txt = '{"wordform":"","msd":{"category":"' + wordType + '",';
+
+    switch( wordType ) {
+        case CONST_WORD_TYPE_NOUN :        // именица
+        case CONST_WORD_TYPE_PRONOUN :     // заменица
+        case CONST_WORD_TYPE_ADJECTIVE :   // придев
+        case CONST_WORD_TYPE_NUMERAL :     // број
+        case CONST_WORD_TYPE_VERB :        // глагол
+        case CONST_WORD_TYPE_ADVERB :      // прилог
+        case CONST_WORD_TYPE_CONJUNCTION : // везник
+        case CONST_WORD_TYPE_PARTICLE :    // речца
+            txt = txt + '"type":""}';
+            break;
+        case CONST_WORD_TYPE_PREPOSITION : // предлог
+            txt = txt + '"case":""}';
+            break;
+        case CONST_WORD_TYPE_INTERJECTION : // узвик
+        case CONST_WORD_TYPE_ABBREVIATION : // скраћеница
+        case CONST_WORD_TYPE_PUNCTUATION : // интерпункција
+            txt = txt + '"dummy":""}';
+            break;
+        default:
+            alert("Непозната врста речи: " + wordType);
+            txt = "{}";
+            break;
+    }
+    txt = txt + "}";
+    console.log("Constructed object: "+ txt);
+    return JSON.parse(txt);
+}
+
+function onLoad() {
+    document.getElementById("divGenerate").style.display = 'none';
 }

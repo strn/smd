@@ -59,7 +59,11 @@ function getWordTypeDropDownBox(selElem, selId) {
 
 // Род
 function getGenderDropDownBox(selElem, selId) {
-	const array = ["-", "", CONST_GENDER_MASCULINE, "мушки", CONST_GENDER_FEMININE, "женски", CONST_GENDER_NEUTRAL, "средњи"];
+	const array = [
+		"-", "",
+		CONST_GENDER_MASCULINE, "мушки",
+		CONST_GENDER_FEMININE, "женски",
+		CONST_GENDER_NEUTRAL, "средњи"];
 	const cssClassName = "clsGenderDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idGender-" + selId);
@@ -71,7 +75,10 @@ function getGenderDropDownBox(selElem, selId) {
 
 // Број
 function getNumberDropDownBox(selElem, selId) {
-	const array = ["-", "", CONST_NUMBER_SINGULAR, "једнина", CONST_NUMBER_PLURAL, "множина"];
+	const array = [
+		"-", "",
+		CONST_NUMBER_SINGULAR, "једнина",
+		CONST_NUMBER_PLURAL, "множина"];
 	const cssClassName = "clsNumberDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idNumber-" + selId);
@@ -115,7 +122,11 @@ function getAnimateDropDownBox(selElem, selId) {
 
 // Врста именице
 function getNounTypeDropDownBox(selElem, selId) {
-	const array = ["c", "заједничка", "p", "властита", "", "градивна", "", "збирна"];
+	const array = ["-", "",
+		CONST_NOUN_TYPE_COMMON, "заједничка",
+		CONST_NOUN_TYPE_PROPER, "властита",
+		CONST_NOUN_TYPE_MASS, "градивна",
+		CONST_NOUN_TYPE_COLLECTIVE, "збирна"];
 	const cssClassName = "clsNounTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idNounType-" + selId);
@@ -127,7 +138,7 @@ function getNounTypeDropDownBox(selElem, selId) {
 
 // Врста глагола
 function getVerbTypeDropDownBox(selElem, selId) {
-	var array = ["m", "главни", "a", "помоћни", "c", "односни"];
+	var array = ["-", "", "m", "главни", "a", "помоћни", "c", "односни"];
 	const cssClassName = "clsVerbTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idVerbType-" + selId);
@@ -140,13 +151,14 @@ function getVerbTypeDropDownBox(selElem, selId) {
 // Глаголско време
 function getVerbTenseDropDownBox(selElem, selId) {
 	var array = [
-		"n", "инфинитив",
-		"p", "партицип",
-		"r", "презент",
-		"f", "футур",
-		"m", "императив",
-		"a", "аорист",
-		"e", "имперфект"];
+		"-", "",
+		CONST_VERB_TENSE_INFINITIVE, "инфинитив",
+		CONST_VERB_TENSE_PARTICIPLE, "партицип",
+		CONST_VERB_TENSE_PRESENT,    "презент",
+		CONST_VERB_TENSE_FUTURE,     "футур",
+		CONST_VERB_TENSE_IMPERATIVE, "императив",
+		CONST_VERB_TENSE_AORIST,     "аорист",
+		CONST_VERB_TENSE_IMPERFECT,  "имперфект"];
 	const cssClassName = "clsVerbTenseDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idVerbTense-" + selId);
@@ -182,7 +194,7 @@ function getVerbNegateDropDownBox(selElem, selId) {
 
 // Врста придева
 function getAdjectiveTypeDropDownBox(selElem, selId) {
-	const array = ["g", "описни", "s", "присвојни", "p", "радни глаголски"];
+	const array = ["-", "", "g", "описни", "s", "присвојни", "p", "радни глаголски"];
 	const cssClassName = "clsAdjectiveTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdjectiveType-" + selId);
@@ -194,7 +206,7 @@ function getAdjectiveTypeDropDownBox(selElem, selId) {
 
 // Степен поређења придева
 function getAdjectiveDegreeDropDownBox(selElem, selId) {
-	const array = ["p", "позитив", "c", "компаратив", "s", "суперлатив"];
+	const array = ["-", "", "p", "позитив", "c", "компаратив", "s", "суперлатив"];
 	const cssClassName = "clsAdjectiveDegreeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdjectiveDegree-" + selId);
@@ -219,6 +231,7 @@ function getDefinitenessDropDownBox(selElem, selId) {
 // Врста заменице
 function getPronounTypeDropDownBox(selElem, selId) {
 	const array = [
+		"-", "",
 		"p", "лична",
 		"d", "показна",
 		"i", "неодређена",
@@ -237,7 +250,7 @@ function getPronounTypeDropDownBox(selElem, selId) {
 
 // Врста прилога
 function getAdverbTypeDropDownBox(selElem, selId) {
-	var array = ["g", "општи", "r", "глаголски садашњи", "p", "глаголски прошли"];
+	var array = ["-", "", "g", "општи", "r", "глаголски садашњи", "p", "глаголски прошли"];
 	const cssClassName = "clsAdverbTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdverbType-" + selId);
@@ -250,6 +263,7 @@ function getAdverbTypeDropDownBox(selElem, selId) {
 // Падеж предлога
 function getPrepositionCaseDropDownBox(selElem, selId) {
 	var array = [
+		"-", "",
 		CONST_CASE_GENITIVE, "генитив",
 		CONST_CASE_DATIVE, "датив",
 		CONST_CASE_ACCUSATIVE, "акузатив",
@@ -266,7 +280,7 @@ function getPrepositionCaseDropDownBox(selElem, selId) {
 
 
 function getConjunctionTypeDropDownBox(selElem, selId) {
-	var array = ["c", "саставни", "s", "зависни"];
+	var array = ["-", "", "c", "саставни", "s", "зависни"];
 	const cssClassName = "clsConjunctionTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idConjunctionType-" + selId);
@@ -278,7 +292,7 @@ function getConjunctionTypeDropDownBox(selElem, selId) {
 
 
 function getNumeralFormDropDownBox(selElem, selId) {
-	var array = ["d", "цифарски", "r", "римски", "l", "словни"];
+	var array = ["-", "", "d", "цифарски", "r", "римски", "l", "словни"];
 	const cssClassName = "clsNumeralFormDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idNumeralForm-" + selId);
@@ -290,7 +304,7 @@ function getNumeralFormDropDownBox(selElem, selId) {
 
 
 function getNumeralTypeDropDownBox(selElem, selId) {
-	var array = ["c", "основни", "o", "редни", "m", "вишеструки", "s", "посебни"];
+	var array = ["-", "", "c", "основни", "o", "редни", "m", "вишеструки", "s", "посебни"];
 	const cssClassName = "clsNumeralTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idNumeralType-" + selId);
@@ -302,7 +316,7 @@ function getNumeralTypeDropDownBox(selElem, selId) {
 
 
 function getParticleTypeDropDownBox(selElem, selId) {
-	var array = ["z", "одрична", "q", "упитна", "o", "модална", "r", "потврдна"];
+	var array = ["-", "", "z", "одрична", "q", "упитна", "o", "модална", "r", "потврдна"];
 	const cssClassName = "clsParticleTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idParticleType-" + selId);
@@ -314,7 +328,7 @@ function getParticleTypeDropDownBox(selElem, selId) {
 
 
 function getResidualTypeDropDownBox(selElem, selId) {
-	var array = ["f", "страно", "w", "веб", "e", "емотикон", "h", "хештег", "a", "ет"];
+	var array = ["-", "", "f", "страно", "w", "веб", "e", "емотикон", "h", "хештег", "a", "ет"];
 	const cssClassName = "clsResidualTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idResidualType-" + selId);
