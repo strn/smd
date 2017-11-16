@@ -214,6 +214,15 @@ function getAbbreviationWidgets(result, index) {
 	return cw;
 }
 
+// Residual
+function getResidualWidgets(result, index) {
+	var cw = getWidgetContainer(result, index);
+	cw.innerHTML += ' тип&nbsp;';
+	cw.appendChild(getResidualTypeDropDownBox(result.msd.type, index));
+	return cw;
+}
+
+
 // Punctuation - ok
 function getPunctuationWidgets(result, index) {
 	var cw = getWidgetContainer(result, index);

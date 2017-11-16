@@ -46,7 +46,8 @@ function getWordTypeDropDownBox(selElem, selId) {
 		CONST_WORD_TYPE_INTERJECTION, "Узвик",
 		CONST_WORD_TYPE_PARTICLE,     "Речца",
 		CONST_WORD_TYPE_ABBREVIATION, "Скраћеница",
-		CONST_WORD_TYPE_PUNCTUATION,  "Остало"];
+		CONST_WORD_TYPE_RESIDUAL,     "Остало",
+		CONST_WORD_TYPE_PUNCTUATION,  "Интерпункција"];
 	const cssClassName = "clsWordTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idWordType-" + selId);
@@ -328,7 +329,13 @@ function getParticleTypeDropDownBox(selElem, selId) {
 
 
 function getResidualTypeDropDownBox(selElem, selId) {
-	var array = ["-", "", "f", "страно", "w", "веб", "e", "емотикон", "h", "хештег", "a", "ет"];
+	var array = [
+		"-", "",
+		CONST_RESIDUAL_TYPE_FOREIGN, "страно",
+		CONST_RESIDUAL_TYPE_WEB, "веб",
+		CONST_RESIDUAL_TYPE_EMO, "емотикон",
+		CONST_RESIDUAL_TYPE_HASHTAG, "хештег",
+		CONST_RESIDUAL_TYPE_AT, "ет"];
 	const cssClassName = "clsResidualTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idResidualType-" + selId);

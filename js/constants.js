@@ -19,7 +19,8 @@ const CONST_WORD_TYPE_CONJUNCTION  = "C"; // Conjunction
 const CONST_WORD_TYPE_INTERJECTION = "I"; // Interjection
 const CONST_WORD_TYPE_PARTICLE     = "Q"; // Particle
 const CONST_WORD_TYPE_ABBREVIATION = "Y"; // Abbreviation
-const CONST_WORD_TYPE_PUNCTUATION  = "X"; // Punctuation
+const CONST_WORD_TYPE_RESIDUAL     = "X"; // Residual
+const CONST_WORD_TYPE_PUNCTUATION  = "Z"; // Punctuation
 
 // Case
 const CONST_CASE_NOMINATIVE = "n";
@@ -53,8 +54,19 @@ const CONST_NOUN_TYPE_MASS = "m"; // градивна именица
 // Verb types
 const CONST_VERB_TENSE_INFINITIVE = "n"; //инфинитив
 const CONST_VERB_TENSE_PARTICIPLE = "p"; // партицип
-const CONST_VERB_TENSE_PRESENT = "r"; // презент
-const CONST_VERB_TENSE_FUTURE = "f"; // футур
+const CONST_VERB_TENSE_PRESENT    = "r"; // презент
+const CONST_VERB_TENSE_FUTURE     = "f"; // футур
 const CONST_VERB_TENSE_IMPERATIVE = "m"; // императив
-const CONST_VERB_TENSE_AORIST = "a"; // аорист
-const CONST_VERB_TENSE_IMPERFECT = "e"; // имперфект
+const CONST_VERB_TENSE_AORIST     = "a"; // аорист
+const CONST_VERB_TENSE_IMPERFECT  = "e"; // имперфект
+
+// Residual types
+const CONST_RESIDUAL_TYPE_FOREIGN = "f";
+const CONST_RESIDUAL_TYPE_WEB     = "w";
+const CONST_RESIDUAL_TYPE_EMO     = "e";
+const CONST_RESIDUAL_TYPE_HASHTAG = "h";
+const CONST_RESIDUAL_TYPE_AT      = "a";
+
+// Output types
+const CONST_OUTPUT_MSD = "msd";
+const CONST_OUTPUT_DESCRIPTION = "description";

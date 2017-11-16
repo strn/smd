@@ -11,6 +11,7 @@ function getWord() {
     var tblWords = document.getElementById("tblWords");
     var inpLemma = document.getElementById("lemma");
     var divGenerate = document.getElementById("divGenerate");
+    var preOutput = document.getElementById("preOutput");
 
     resultMessage.innerHTML = "", errorMessage.innerHTML = "";
 
@@ -41,6 +42,7 @@ function getWord() {
 		if (this.readyState == 4 && this.status == 404) {
 			errorMessage.innerHTML = "Дошло је до грешке. Реч „" + word + "“ није нађена.";
 		}
+        preOutput.innerHTML = '';
     };
     // Perform minimal validation
     var status = validateWord(word);
@@ -76,6 +78,7 @@ function addNonExistentWord(word) {
     var wordType = document.getElementById("idWordType-main").value;
     result = getEmptyMSD(wordType);
     result.wordform = word;
+    result.id = 0;
     addWordWidgets(result, 0);
     disableNewWordFields();
     document.getElementById("divGenerate").style.display = 'block';
@@ -116,8 +119,7 @@ function addWordWidgets(result, index) {
 
     // Assemble row together
     var tblWords = document.getElementById("tblWords");
-    rowTr.appendChild( getColumnWordForm(result.wordform) );
-    //rowTr.appendChild( getColumnLemma(result.lemma) );
+    rowTr.appendChild( getColumnWordForm(result.wordform, index) );
     rowTr.appendChild( getWordMetaWidgets(result, index) );
     rowTr.appendChild( getNavButtons(index) );
     tblWords.appendChild( rowTr );
@@ -125,10 +127,11 @@ function addWordWidgets(result, index) {
 
 
 // Adds one row to table with words
-function getColumnWordForm(wordForm) {
+function getColumnWordForm(wordForm, index) {
 
     var inpWordForm = document.createElement("input");
     inpWordForm.className = "clsInputWordForm";
+    inpWordForm.id = "idWordForm-" + index;
     inpWordForm.value = wordForm;
     inpWordForm.setAttribute("type", "text");
     inpWordForm.setAttribute("maxLength", CONST_MAX_LENGTH_WORDFORM);
@@ -201,6 +204,9 @@ function getWordMetaWidgets(result, index) {
         case CONST_WORD_TYPE_ABBREVIATION : // скраћеница
             wordMetadata = getAbbreviationWidgets(result, index);
             break;
+        case CONST_WORD_TYPE_RESIDUAL: // остало
+            wordMetadata = getResidualWidgets(result, index);
+            break;
         case CONST_WORD_TYPE_PUNCTUATION : // интерпункција
             wordMetadata = getPunctuationWidgets(result, index);
             break;
@@ -269,7 +275,7 @@ function addWordRow(index) {
 
 // Construct empty MSD (except word type)
 function getEmptyMSD(wordType) {
-    var txt = '{"wordform":"","msd":{"category":"' + wordType + '",';
+    var txt = '{"id":"0","wordform":"","msd":{"category":"' + wordType + '",';
 
     switch( wordType ) {
         case CONST_WORD_TYPE_NOUN :        // именица
@@ -279,6 +285,7 @@ function getEmptyMSD(wordType) {
         case CONST_WORD_TYPE_VERB :        // глагол
         case CONST_WORD_TYPE_ADVERB :      // прилог
         case CONST_WORD_TYPE_CONJUNCTION : // везник
+        case CONST_WORD_TYPE_RESIDUAL:     // остало
         case CONST_WORD_TYPE_PARTICLE :    // речца
             txt = txt + '"type":""}';
             break;
@@ -296,7 +303,7 @@ function getEmptyMSD(wordType) {
             break;
     }
     txt = txt + "}";
-    console.log("Constructed object: "+ txt);
+    //console.log("Constructed object: "+ txt);
     return JSON.parse(txt);
 }
 
