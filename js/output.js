@@ -235,6 +235,7 @@ function sendEntries() {
     var xhttp = new XMLHttpRequest();
     var preOutputText = document.getElementById("preOutput").innerHTML;
     var resultMessage = document.getElementById("resultMessage");
+    var lemma = document.getElementById("lemma").value;
 
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -251,6 +252,6 @@ function sendEntries() {
     } else {
         xhttp.open("POST", "/php/smd/collect.php", true);
         xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhttp.send("data=" + preOutputText);
+        xhttp.send("data=" + preOutputText + "&lemma=" + lemma);
     }
 }

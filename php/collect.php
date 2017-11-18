@@ -3,6 +3,7 @@
 	define("CONST_NL", "\n");
 	define("CONST_NL_DELIMITER", "\n");
 	define("CONST_SYMBOL_PIPE", "|");
+	define('SCRIPT_NAME', 'collect.php');
 
 	function get_delete_statement($str) {
 		$strArray = explode(" ", $str);
@@ -45,11 +46,12 @@
 	$method = $_SERVER['REQUEST_METHOD'] ?? '';
 	if ($method == '') {
 		echo "\$_SERVER undefined, aborting ..." . CONST_NL;
+		error_log(SCRIPT_NAME . "\$_SERVER undefined, aborting ...");
 		return;
 	} else {
 		switch($method) {
 			case 'GET':
-				echo "I don't serve GET request." . CONST_NL;
+				echo SCRIPT_NAME . ": I don't serve GET request." . CONST_NL;
 				break;
 			case 'POST':
 				$data = $_POST['data'] ?? '';
@@ -57,15 +59,18 @@
 				break;
 			default:
 				echo 'Unknown request method $method, aborting ...' . CONST_NL;
+				error_log(SCRIPT_NAME . ": Unknown request method $method, aborting ...");
 				return;
 		}
 	}
 	if ($data == '') {
 		echo "Form attribute 'data' was not defined, aborting." . CONST_NL;
+		error_log(SCRIPT_NAME . "Form attribute 'data' was not defined, aborting.");
 		return;
 	}
 	if ($lemma == '') {
 		echo "Form attribute 'lemma' was not defined, aborting." . CONST_NL;
+		error_log(SCRIPT_NAME . ": Form attribute 'lemma' was not defined, aborting.");
 		return;
 	}
 
