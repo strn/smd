@@ -1,245 +1,227 @@
 // Functions that create group of widgets for entering specific types of words
 
 // Noun - ok
-function getNounWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getNounWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' тип&nbsp;';
-	cw.appendChild(getNounTypeDropDownBox(result.msd.type, index));
+	context.selected = context.msd.type;
+	cw.appendChild(getNounTypeDropDownBox(context));
 	cw.innerHTML += ' род&nbsp;';
-	cw.appendChild(getGenderDropDownBox(result.msd.gender, index));
+	context.selected = context.msd.gender;
+	cw.appendChild(getGenderDropDownBox(context));
 	cw.innerHTML += ' број&nbsp;';
-	cw.appendChild(getNumberDropDownBox(result.msd.number, index));
+	context.selected = context.msd.number;
+	cw.appendChild(getNumberDropDownBox(context));
 	cw.innerHTML += ' падеж&nbsp;';
-	cw.appendChild(getCaseDropDownBox(result.msd.case, index));
+	context.selected = context.msd.case;
+	cw.appendChild(getCaseDropDownBox(context));
 	cw.innerHTML += ' особина&nbsp;';
-	if (result.msd.animate !== CONST_UNDEFINED) {
-		cw.appendChild(getAnimateDropDownBox(result.msd.animate, index));
-	} else {
-		cw.appendChild(getAnimateDropDownBox("", index));
-	}
+	context.selected = context.msd.animate;
+	cw.appendChild(getAnimateDropDownBox(context));
 	return cw;
 }
+
 
 // Pronoun - ok
-function getPronounWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getPronounWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' тип&nbsp;';
-	cw.appendChild(getPronounTypeDropDownBox(result.msd.type, index));
+	context.selected = context.msd.type;
+	cw.appendChild(getPronounTypeDropDownBox(context));
 	cw.innerHTML += ' лице&nbsp;';
-	if (result.msd.person !== CONST_UNDEFINED) {
-		cw.appendChild(getPersonDropDownBox(result.msd.person, index));
-	} else {
-		cw.appendChild(getPersonDropDownBox("", index));
-	}
+	context.selected = context.msd.person;
+	cw.appendChild(getPersonDropDownBox(context));
 	cw.innerHTML += ' род&nbsp;';
-	if (result.msd.gender !== CONST_UNDEFINED) {
-		cw.appendChild(getGenderDropDownBox(result.msd.gender, index));
-	} else {
-		cw.appendChild(getGenderDropDownBox("", index));
-	}
+	context.selected = context.msd.gender;
+	cw.appendChild(getGenderDropDownBox(context));
 	cw.innerHTML += ' број&nbsp;';
-	if (result.msd.number !== CONST_UNDEFINED) {
-		cw.appendChild(getNumberDropDownBox(result.msd.number, index));
-	} else {
-		cw.appendChild(getNumberDropDownBox("", index));
-	}
+	context.selected = context.msd.number;
+	cw.appendChild(getNumberDropDownBox(context));
 	cw.innerHTML += ' падеж&nbsp;';
-	if (result.msd.case !== CONST_UNDEFINED) {
-		cw.appendChild(getCaseDropDownBox(result.msd.case, index));
-	} else {
-		cw.appendChild("", index);
-	}
+	context.selected = context.msd.case;
+	cw.appendChild(getCaseDropDownBox(context));
 	cw.innerHTML += ' особина&nbsp;';
-	if (result.msd.animate !== CONST_UNDEFINED) {
-		cw.appendChild(getAnimateDropDownBox(result.msd.animate, index));
-	} else {
-		cw.appendChild(getAnimateDropDownBox("", index));
-	}
+	context.selected = context.msd.animate;
+	cw.appendChild(getAnimateDropDownBox(context));
 	return cw;
 }
+
 
 // Adjective - ok
-function getAdjectiveWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getAdjectiveWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' тип&nbsp;';
-	cw.appendChild(getAdjectiveTypeDropDownBox(result.msd.tyoe, index));
+	context.selected = context.msd.type;
+	cw.appendChild(getAdjectiveTypeDropDownBox(context));
 	cw.innerHTML += ' степен&nbsp;';
-	cw.appendChild(getAdjectiveDegreeDropDownBox(result.msd.degree, index));
+	context.selected = context.msd.degree;
+	cw.appendChild(getAdjectiveDegreeDropDownBox(context));
 	cw.innerHTML += ' род&nbsp;';
-	cw.appendChild(getGenderDropDownBox(result.msd.gender, index));
+	context.selected = context.msd.gender;
+	cw.appendChild(getGenderDropDownBox(context));
 	cw.innerHTML += ' број&nbsp;';
-	cw.appendChild(getNumberDropDownBox(result.msd.number, index));
+	context.selected = context.msd.number;
+	cw.appendChild(getNumberDropDownBox(context));
 	cw.innerHTML += ' падеж&nbsp;';
-	cw.appendChild(getCaseDropDownBox(result.msd.case, index));
+	context.selected = context.msd.case;
+	cw.appendChild(getCaseDropDownBox(context));
 	cw.innerHTML += ' одређеност&nbsp;';
-	if (result.msd.definiteness !== CONST_UNDEFINED) {
-		cw.appendChild(getDefinitenessDropDownBox(result.msd.definiteness, index));
-	} else {
-		cw.appendChild(getDefinitenessDropDownBox("", index));
-	}
+	context.selected = context.msd.definiteness;
+	cw.appendChild(getDefinitenessDropDownBox(context));
 	cw.innerHTML += ' особина&nbsp;';
-	if (result.msd.animate !== CONST_UNDEFINED) {
-		cw.appendChild(getAnimateDropDownBox(result.msd.animate, index));
-	} else {
-		cw.appendChild(getAnimateDropDownBox("", index));
-	}
+	context.selected = context.msd.animate;
+	cw.appendChild(getAnimateDropDownBox(context));
 	return cw;
 }
 
+
 // Numeral - ok
-function getNumeralWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getNumeralWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' форма&nbsp;';
-	cw.appendChild(getNumeralFormDropDownBox(result.msd.form, index));
+	context.selected = context.msd.form;
+	cw.appendChild(getNumeralFormDropDownBox(context));
 	cw.innerHTML += ' тип&nbsp;';
-	cw.appendChild(getNumeralTypeDropDownBox(result.msd.type, index));
+	context.selected = context.msd.type;
+	cw.appendChild(getNumeralTypeDropDownBox(context));
 	cw.innerHTML += ' род&nbsp;';
-	if (result.msd.gender !== CONST_UNDEFINED) {
-		cw.appendChild(getGenderDropDownBox(result.msd.gender, index));
-	} else {
-		cw.appendChild(getGenderDropDownBox("", index));
-	}
+	context.selected = context.msd.gender;
+	cw.appendChild(getGenderDropDownBox(context));
 	cw.innerHTML += ' број&nbsp;';
-	if (result.msd.number !== CONST_UNDEFINED) {
-		cw.appendChild(getNumberDropDownBox(result.msd.number, index));
-	} else {
-		cw.appendChild(getNumberDropDownBox("", index));
-	}
+	context.selected = context.msd.number;
+	cw.appendChild(getNumberDropDownBox(context));
 	cw.innerHTML += ' падеж&nbsp;';
-	if (result.msd.case !== CONST_UNDEFINED) {
-		cw.appendChild(getCaseDropDownBox(result.msd.case, index));
-	} else {
-		cw.appendChild("", index);
-	}
+	context.selected = context.msd.case;
+	cw.appendChild(getCaseDropDownBox(context));
 	cw.innerHTML += ' особина&nbsp;';
-	if (result.msd.animate !== CONST_UNDEFINED) {
-		cw.appendChild(getAnimateDropDownBox(result.msd.animate, index));
-	} else {
-		cw.appendChild(getAnimateDropDownBox("", index));
-	}
+	context.selected = context.msd.animate;
+	cw.appendChild(getAnimateDropDownBox(context));
 	return cw;
 }
 
 // Verb - ok
-function getVerbWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getVerbWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' тип&nbsp;';
-	cw.appendChild(getVerbTypeDropDownBox(result.msd.type, index));
+	context.selected = context.msd.type;
+	cw.appendChild(getVerbTypeDropDownBox(context));
 	cw.innerHTML += ' форма&nbsp;';
-	if (result.msd.form !== CONST_UNDEFINED) {
-		cw.appendChild(getVerbTenseDropDownBox(result.msd.form, index));
-	} else {
-		cw.appendChild("", index);
-	}
+	context.selected = context.msd.form;
+	cw.appendChild(getVerbTenseDropDownBox(context));
 	cw.innerHTML += ' лице&nbsp;';
-	if (result.msd.person !== CONST_UNDEFINED) {
-		cw.appendChild(getPersonDropDownBox(result.msd.person, index));
-	} else {
-		cw.appendChild(getPersonDropDownBox("", index));
-	}
+	context.selected = context.msd.person;
+	cw.appendChild(getPersonDropDownBox(context));
 	cw.innerHTML += ' број&nbsp;';
-	if (result.msd.number !== CONST_UNDEFINED) {
-		cw.appendChild(getNumberDropDownBox(result.msd.number, index));
-	} else {
-		cw.appendChild(getNumberDropDownBox("", index));
-	}
+	context.selected = context.msd.number;
+	cw.appendChild(getNumberDropDownBox(context));
 	cw.innerHTML += ' род&nbsp;';
-	if (result.msd.gender !== CONST_UNDEFINED) {
-		cw.appendChild(getGenderDropDownBox(result.msd.gender, index));
-	} else {
-		cw.appendChild(getGenderDropDownBox("", index));
-	}
+	context.selected = context.msd.gender;
+	cw.appendChild(getGenderDropDownBox(context));
 	cw.innerHTML += ' одричан&nbsp;';
-	if (result.msd.negative !== CONST_UNDEFINED) {
-		cw.appendChild(getVerbNegateDropDownBox(result.msd.negative, index));
-	} else {
-		cw.appendChild(getVerbNegateDropDownBox("", index));
-	}
+	context.selected = context.msd.negative;
+	cw.appendChild(getVerbNegateDropDownBox(context));
 	return cw;
 }
 
 
 // Adverb - ok
-function getAdverbWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getAdverbWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' тип&nbsp;';
-	cw.appendChild(getAdverbTypeDropDownBox(result.msd.type, index));
+	context.selected = context.msd.type;
+	cw.appendChild(getAdverbTypeDropDownBox(context));
 	cw.innerHTML += ' степен&nbsp;';
-	if (result.msd.degree !== CONST_UNDEFINED) {
-		cw.appendChild(getAdverbDegreeDropDownBox(result.msd.degree, index));
-	} else {
-		cw.appendChild(getAdverbDegreeDropDownBox("", index));
-	}
+	context.selected = context.msd.degree;
+	cw.appendChild(getAdverbDegreeDropDownBox(context));
 	return cw;
 }
 
 
 // Preposition
-function getPrepositionWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getPrepositionWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' падеж&nbsp;';
-	cw.appendChild(getPrepositionCaseDropDownBox(result.msd.case, index));
+	context.selected = context.msd.case;
+	cw.appendChild(getPrepositionCaseDropDownBox(context));
 	return cw;
 }
 
 
 // Conjunction - ok
-function getConjunctionWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getConjunctionWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' тип&nbsp;';
-	cw.appendChild(getConjunctionTypeDropDownBox(result.msd.type, index));
+	context.selected = context.msd.type;
+	cw.appendChild(getConjunctionTypeDropDownBox(context));
 	return cw;
 }
 
 
 // Interjection - ok
-function getInterjectionWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getInterjectionWidgets(context) {
+	var cw = getWidgetContainer(context);
 	return cw;
 }
 
 
 // Particle - ok
-function getParticleWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getParticleWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' тип&nbsp;';
-	cw.appendChild(getParticleTypeDropDownBox(result.msd.type, index));
+	context.selected = context.msd.type;
+	cw.appendChild(getParticleTypeDropDownBox(context));
 	return cw;
 }
 
 
 // Abbreviation - ok
-function getAbbreviationWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getAbbreviationWidgets(context) {
+	var cw = getWidgetContainer(context);
 	return cw;
 }
 
+
 // Residual
-function getResidualWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getResidualWidgets(context) {
+	var cw = getWidgetContainer(context);
 	cw.innerHTML += ' тип&nbsp;';
-	cw.appendChild(getResidualTypeDropDownBox(result.msd.type, index));
+	context.selected = context.msd.type;
+	cw.appendChild(getResidualTypeDropDownBox(context));
 	return cw;
 }
 
 
 // Punctuation - ok
-function getPunctuationWidgets(result, index) {
-	var cw = getWidgetContainer(result, index);
+function getPunctuationWidgets(context) {
+	var cw = getWidgetContainer(context);
 	return cw;
 }
 
+
 // Creates widget that will contain other word widgets
-function getWidgetContainer(result, index) {
+function getWidgetContainer(context) {
 	var container = document.createElement("div");
 	// Create holder for id
 	var inpId   = document.createElement("input");
-	inpId.id    = "id-" + index;
-	inpId.value = result.id;
+	inpId.id    = "id-" + context.index;
+	inpId.value = context.dbId;
+	inpId.type  = "hidden";
+	container.appendChild(inpId);
+	inpId       = document.createElement("input");
+	inpId.id    = "idChanged-" + context.index;
+	inpId.value = false;
 	inpId.type  = "hidden";
 	container.appendChild(inpId);
 	container.innerHTML += 'Врста&nbsp;';
-	var category = getWordTypeDropDownBox(result.msd.category, index);
-	container.appendChild(category);
+	context.selected = context.msd.category;
+	container.appendChild(getWordTypeDropDownBox(context));
 	return container;
+}
+
+
+// Common function to indicate which choice box changed
+function wordMetaCboxChanged(dropDownBox, index) {
+	//console.log("wordMetaCboxChanged: " + dropDownBox.id + ", index: " + index);
+	var hiddChanged = document.getElementById("idChanged-" + index);
+	hiddChanged.value = true;
 }

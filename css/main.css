@@ -59,3 +59,8 @@ tr:nth-child(odd) {background: FLORALWHITE}
 .clsWordRowSelected {
 	background-color: red;
 }
+
+.clsColumnRowNumber {
+	font-size: 50%;
+	text-align: center;
+}

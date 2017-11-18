@@ -14,7 +14,7 @@
     </head>
 
     <body onload="onLoad()">
-        <h1>Речник српског језика</h1>
+        <h1>Морфолошки речник српског језика</h1>
         <br/>
         <div id="findWord">
             <p>Унесите реч коју желите да нађете (пазећи на велика и мала слова) и то:</p>
@@ -37,7 +37,8 @@
             <br/>
         </div>
         <div id="divGenerate"> <!-- Block for generating DB entries -->
-            <input type="submit" id="btnGenerateText" value=" Прикажи ставке за базу података " onclick="displayEntries()"/>&nbsp;&nbsp;&nbsp;
+            <input type="submit" id="btnGenerateText" value=" Прикажи ставке за базу података " onclick="displayEntries()"/>&nbsp;
+            <input type="checkbox" id="idCheckDeleteOnly" /> <label>Само за брисање</label>&nbsp;&nbsp;&nbsp;
             <input type="submit" id="btnGenerateEmail" value=" Пошаљи ставке за базу података " onclick="sendEntries()"/>
             <br/>
         </div>

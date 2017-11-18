@@ -58,8 +58,7 @@ function getWord() {
 function addAddWordWidgets(word) {
     var divAddWord = document.getElementById("divAddWord");
     divAddWord.innerHTML += 'Врста речи:&nbsp;';
-
-    var ddbWordType = getWordTypeDropDownBox("N", "main");
+    var ddbWordType = getWordTypeDropDownBox({selected: "N", index:"main"});
     divAddWord.appendChild(ddbWordType);
     divAddWord.innerHTML += '&nbsp;';
 
@@ -71,6 +70,7 @@ function addAddWordWidgets(word) {
     divAddWord.appendChild(btnAddWord);
 }
 
+
 // Add word that does not exist in database
 function addNonExistentWord(word) {
     createWordsHeader();
@@ -80,6 +80,8 @@ function addNonExistentWord(word) {
     result.wordform = word;
     result.id = 0;
     addWordWidgets(result, 0);
+    var hiddChanged = document.getElementById("idChanged-0");
+    hiddChanged.value = true;
     disableNewWordFields();
     document.getElementById("divGenerate").style.display = 'block';
 }
@@ -93,11 +95,15 @@ function disableNewWordFields() {
     divAdd.style.display = 'none';
 }
 
+
 function createWordsHeader() {
     var tblWords = document.getElementById("tblWords");
     var th, tr;
 
     tr = document.createElement("tr");
+    th = document.createElement("th");
+    th.innerHTML = "#";
+    tr.appendChild(th);
     th = document.createElement("th");
     th.innerHTML = "Изведена реч";
     tr.appendChild(th);
@@ -119,10 +125,21 @@ function addWordWidgets(result, index) {
 
     // Assemble row together
     var tblWords = document.getElementById("tblWords");
+    rowTr.appendChild( getRowNumber(index) );
     rowTr.appendChild( getColumnWordForm(result.wordform, index) );
     rowTr.appendChild( getWordMetaWidgets(result, index) );
     rowTr.appendChild( getNavButtons(index) );
     tblWords.appendChild( rowTr );
+}
+
+
+// Creates table cell holding a number equivalent to "index+1"
+function getRowNumber(index) {
+    var tdRowNumber = document.createElement("td");
+    tdRowNumber.id = CONST_TD_COLUMN_ROW_NUMBER_ID + "-" + index;
+    tdRowNumber.className = CONST_TR_CLASS_COLUMN_ROW_NUMBER;
+    tdRowNumber.innerHTML = (index+1);
+    return tdRowNumber;
 }
 
 
@@ -136,6 +153,7 @@ function getColumnWordForm(wordForm, index) {
     inpWordForm.setAttribute("type", "text");
     inpWordForm.setAttribute("maxLength", CONST_MAX_LENGTH_WORDFORM);
     inpWordForm.setAttribute("size", CONST_SIZE_WORDFORM);
+    inpWordForm.setAttribute("onkeypress", "onWordFormChange(this," + index + ")");
 
     var tdWordForm = document.createElement("td");
     tdWordForm.className = "clsColumnWordForm";
@@ -161,8 +179,8 @@ function getColumnLemma(lemma) {
 function getWordMetaWidgets(result, index) {
     var wordType;
     var wordMetadata;
-
-    //console.log("result: " + JSON.stringify(result));
+    var context = {msd : result.msd, index : index, dbId : result.id};
+    context.onchange = "wordMetaCboxChanged(this," + index + ")";
     // See what word type should be added
     if (result === '') {
         wordType = document.getElementById("idWordType-main").value;
@@ -172,43 +190,43 @@ function getWordMetaWidgets(result, index) {
 
     switch( wordType ) {
         case CONST_WORD_TYPE_NOUN : // именица
-            wordMetadata = getNounWidgets(result, index);
+            wordMetadata = getNounWidgets(context);
             break;
         case CONST_WORD_TYPE_PRONOUN : // заменица
-            wordMetadata = getPronounWidgets(result, index);
+            wordMetadata = getPronounWidgets(context);
             break;
         case CONST_WORD_TYPE_ADJECTIVE : // придев
-            wordMetadata = getAdjectiveWidgets(result, index);
+            wordMetadata = getAdjectiveWidgets(context);
             break;
         case CONST_WORD_TYPE_NUMERAL : // број
-            wordMetadata = getNumeralWidgets(result, index);
+            wordMetadata = getNumeralWidgets(context);
             break;
         case CONST_WORD_TYPE_VERB : // глагол
-            wordMetadata = getVerbWidgets(result, index);
+            wordMetadata = getVerbWidgets(context);
             break;
         case CONST_WORD_TYPE_ADVERB : // прилог
-            wordMetadata = getAdverbWidgets(result, index);
+            wordMetadata = getAdverbWidgets(context);
             break;
         case CONST_WORD_TYPE_PREPOSITION : // предлог
-            wordMetadata = getPrepositionWidgets(result, index);
+            wordMetadata = getPrepositionWidgets(context);
             break;
         case CONST_WORD_TYPE_CONJUNCTION : // везник
-            wordMetadata = getConjunctionWidgets(result, index);
+            wordMetadata = getConjunctionWidgets(context);
             break;
         case CONST_WORD_TYPE_INTERJECTION : // узвик
-            wordMetadata = getInterjectionWidgets(result, index);
+            wordMetadata = getInterjectionWidgets(context);
             break;
         case CONST_WORD_TYPE_PARTICLE : // речца
-            wordMetadata = getParticleWidgets(result, index);
+            wordMetadata = getParticleWidgets(context);
             break;
         case CONST_WORD_TYPE_ABBREVIATION : // скраћеница
-            wordMetadata = getAbbreviationWidgets(result, index);
+            wordMetadata = getAbbreviationWidgets(context);
             break;
         case CONST_WORD_TYPE_RESIDUAL: // остало
-            wordMetadata = getResidualWidgets(result, index);
+            wordMetadata = getResidualWidgets(context);
             break;
         case CONST_WORD_TYPE_PUNCTUATION : // интерпункција
-            wordMetadata = getPunctuationWidgets(result, index);
+            wordMetadata = getPunctuationWidgets(context);
             break;
         default:
             alert("Непозната врста речи: " + wordType);
@@ -217,7 +235,8 @@ function getWordMetaWidgets(result, index) {
     }
     var tdWordMetadata = document.createElement("td");
     tdWordMetadata.className = "clsWordMetadata";
-    var dialect = getDialectDropDownBox(result.dialect, index);
+    context.selected = result.dialect;
+    var dialect = getDialectDropDownBox(context);
     wordMetadata.innerHTML += ' наречје&nbsp;';
     wordMetadata.appendChild(dialect);
     tdWordMetadata.appendChild(wordMetadata);
@@ -234,7 +253,7 @@ function getNavButtons(index) {
     checkbox.type = "checkbox";
     checkbox.name = "DelDb-" + index;
     checkbox.id = CONST_CHECKBOX_MARK_DELЕТЕ_ID + "-" + index;
-    checkbox.setAttribute('onchange', "delRowChanged(this, " + index + ")");
+    checkbox.setAttribute('onchange', "delDbRowChanged(this, " + index + ")");
     var label = document.createElement('label')
     label.id = CONST_LABEL_DEL_DB_ID + '-' + index;
     label.setAttribute("for", checkbox.id);
@@ -258,11 +277,13 @@ function getNavButtons(index) {
     return tdNavButtons;
 }
 
+
 // Deletes row in a word table
 function deleteWordRow(row){
     var d = row.parentNode.parentNode.rowIndex;
     document.getElementById('tblWords').deleteRow(d);
 }
+
 
 // Create new row in word table. Use current row
 // to determine word type
@@ -270,10 +291,13 @@ function addWordRow(index) {
     // Get word type from previous row
     var wordType = document.getElementById("idWordType-" + index).value;
     result = getEmptyMSD(wordType);
-    // Add lemma, thus helping operator entering text
+    // Add lemma as word form, thus helping operator entering data
     result.wordform = document.getElementById("lemma").value;
     addWordWidgets(result, index+1);
+    var hiddChanged = document.getElementById("idChanged-" + (index+1));
+    hiddChanged.value = true;
 }
+
 
 // Construct empty MSD (except word type)
 function getEmptyMSD(wordType) {
@@ -313,12 +337,18 @@ function onLoad() {
     document.getElementById("divGenerate").style.display = 'none';
 }
 
+
 // Reacts on checkbox state
-function delRowChanged(checkbox, index) {
+function delDbRowChanged(checkbox, index) {
     var delDbLabel = document.getElementById(CONST_LABEL_DEL_DB_ID + '-' + index);
     if (checkbox.checked) {
         delDbLabel.style = CONST_LABEL_DEL_DB_STYLE_HIGHLIGHT;
     } else {
         delDbLabel.style = '';
     }
+}
+
+function onWordFormChange(textfield, index) {
+    var hiddChanged = document.getElementById("idChanged-" + index);
+    hiddChanged.value = true;
 }

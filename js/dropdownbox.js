@@ -1,40 +1,55 @@
-// Creates generic drop-down box
-function makeDropDownBox(optArray, selElem, cssClasses, cssId) {
+/**
+ * Creates generic drop-down box, passing object "context"
+ * with following data members:
+ *
+ * id: selection.id
+ * index:
+ * classes: selection.className
+ * options: array of options specified as [val1, text1, val2, text2, ..., valN, textN]
+ * selected: selected element
+ * onchange: function fired on "onchange" event
+ */
+function makeDropDownBox(context) {
 	var sel = document.createElement("select");
-	if (typeof cssId !== CONST_UNDEFINED) {
-		sel.id = cssId;
+	if (typeof context.id !== CONST_UNDEFINED) {
+		sel.id = context.id;
 	}
-	if (typeof cssClasses !== CONST_UNDEFINED) {
-		sel.className = cssClasses;
+	if (typeof context.classes !== CONST_UNDEFINED) {
+		sel.className = context.classes;
 	}
-	if (typeof optArray !== CONST_UNDEFINED) {
-		for (var i = 0; i < optArray.length; i+=2) {
+	if (typeof context.options !== CONST_UNDEFINED) {
+		for (var i = 0; i < context.options.length; i+=2) {
 		    var option = document.createElement("option");
-		    option.value = optArray[i];
-		    if (typeof selElem !== CONST_UNDEFINED && option.value === selElem) {
+		    option.value = context.options[i];
+		    if (typeof context.selected !== CONST_UNDEFINED && option.value === context.selected) {
 		    	option.setAttribute('selected', 'selected');
 		    	//console.log("Selected option " + selElem + " for option.value=" + option.value + " and text=" + optArray[i+1]);
 		    }
-		    option.text = optArray[i+1];
+		    option.text = context.options[i+1];
 		    sel.appendChild(option);
 		}
 	}
-	return sel;
-}
-
-function getGenericDropDownBox(array, cssClasses, selElem, selId) {
-	const cssClassName = "clsDropDownBox ";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = makeDropDownBox(array, selElem, cssClassName + cssClasses, selId);
-	} else {
-		var sel = makeDropDownBox(array, selElem, cssClassName + cssClasses);
+	if (typeof context.onchange !== CONST_UNDEFINED) {
+		sel.setAttribute("onchange", context.onchange);
 	}
 	return sel;
 }
 
+
+function getGenericDropDownBox(context) {
+	if (context.classes !== CONST_UNDEFINED) {
+		context.classes += " clsDropDownBox";
+	} else {
+		context.classes = "clsDropDownBox";
+	}
+	return makeDropDownBox(context);
+}
+
+
 // Врста речи
-function getWordTypeDropDownBox(selElem, selId) {
-	const array = [
+function getWordTypeDropDownBox(context) {
+	context.options = [
+		"-", "",
 		CONST_WORD_TYPE_NOUN,         "Именица",
 		CONST_WORD_TYPE_PRONOUN,      "Заменица",
 		CONST_WORD_TYPE_ADJECTIVE,    "Придев",
@@ -48,110 +63,91 @@ function getWordTypeDropDownBox(selElem, selId) {
 		CONST_WORD_TYPE_ABBREVIATION, "Скраћеница",
 		CONST_WORD_TYPE_RESIDUAL,     "Остало",
 		CONST_WORD_TYPE_PUNCTUATION,  "Интерпункција"];
-	const cssClassName = "clsWordTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idWordType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsWordTypeDropDownBox";
+	context.id = "idWordType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 
 // Род
-function getGenderDropDownBox(selElem, selId) {
-	const array = [
+function getGenderDropDownBox(context) {
+	context.options = [
 		"-", "",
 		CONST_GENDER_MASCULINE, "мушки",
 		CONST_GENDER_FEMININE, "женски",
 		CONST_GENDER_NEUTRAL, "средњи"];
-	const cssClassName = "clsGenderDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idGender-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsGenderDropDownBox";
+	context.id = "idGender-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Број
-function getNumberDropDownBox(selElem, selId) {
-	const array = [
+function getNumberDropDownBox(context) {
+	context.options = [
 		"-", "",
 		CONST_NUMBER_SINGULAR, "једнина",
 		CONST_NUMBER_PLURAL, "множина"];
-	const cssClassName = "clsNumberDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idNumber-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsNumberDropDownBox";
+	context.id = "idNumber-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Падеж
-function getCaseDropDownBox(selElem, selId) {
-	const array = [
+function getCaseDropDownBox(context) {
+	context.options = [
 		"-", "",
-		CONST_CASE_NOMINATIVE, "номинатив",
-		CONST_CASE_GENITIVE, "генитив",
-		CONST_CASE_DATIVE, "датив",
-		CONST_CASE_ACCUSATIVE, "акузатив",
-		CONST_CASE_VOCATIVE, "вокатив",
+		CONST_CASE_NOMINATIVE,   "номинатив",
+		CONST_CASE_GENITIVE,     "генитив",
+		CONST_CASE_DATIVE,       "датив",
+		CONST_CASE_ACCUSATIVE,   "акузатив",
+		CONST_CASE_VOCATIVE,     "вокатив",
 		CONST_CASE_INSTRUMENTAL, "инструментал",
-		CONST_CASE_LOCATIVE, "локатив"];
-	const cssClassName = "clsCaseDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idCase-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+		CONST_CASE_LOCATIVE,     "локатив"];
+	context.classes = "clsCaseDropDownBox";
+	context.id = "idCase-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Биће / предмет
-function getAnimateDropDownBox(selElem, selId) {
-	const array = ["-", "", "n", "предмет", "y", "живо биће"];
-	const cssClassName = "clsAnimateDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAnimate-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getAnimateDropDownBox(context) {
+	context.options = [
+		"-", "",
+		"n", "предмет",
+		"y", "живо биће"];
+	context.classes = "clsAnimateDropDownBox";
+	context.id = "idAnimate-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Врста именице
-function getNounTypeDropDownBox(selElem, selId) {
-	const array = ["-", "",
+function getNounTypeDropDownBox(context) {
+	context.options = [
+		"-", "",
 		CONST_NOUN_TYPE_COMMON, "заједничка",
 		CONST_NOUN_TYPE_PROPER, "властита",
 		CONST_NOUN_TYPE_MASS, "градивна",
 		CONST_NOUN_TYPE_COLLECTIVE, "збирна"];
-	const cssClassName = "clsNounTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idNounType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsNounTypeDropDownBox";
+	context.id = "idNounType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Врста глагола
-function getVerbTypeDropDownBox(selElem, selId) {
-	var array = ["-", "", "m", "главни", "a", "помоћни", "c", "односни"];
-	const cssClassName = "clsVerbTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idVerbType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getVerbTypeDropDownBox(context) {
+	context.options = [
+		"-", "",
+		CONST_VERB_TYPE_MAIN,      "главни",
+		CONST_VERB_TYPE_AUXILIARY, "помоћни",
+		CONST_VERB_TYPE_COPULA,    "односни",
+		CONST_VERB_TYPE_REFLEXIVE, "повратни"];
+	context.classes = "clsVerbTypeDropDownBox";
+	context.id = "idVerbType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Глаголско време
-function getVerbTenseDropDownBox(selElem, selId) {
-	var array = [
+function getVerbTenseDropDownBox(context) {
+	context.options = [
 		"-", "",
 		CONST_VERB_TENSE_INFINITIVE, "инфинитив",
 		CONST_VERB_TENSE_PARTICIPLE, "партицип",
@@ -160,82 +156,72 @@ function getVerbTenseDropDownBox(selElem, selId) {
 		CONST_VERB_TENSE_IMPERATIVE, "императив",
 		CONST_VERB_TENSE_AORIST,     "аорист",
 		CONST_VERB_TENSE_IMPERFECT,  "имперфект"];
-	const cssClassName = "clsVerbTenseDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idVerbTense-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsVerbTenseDropDownBox";
+	context.id = "idVerbTense-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Глаголско лице
-function getPersonDropDownBox(selElem, selId) {
-	var array = ["-", "", "1", "прво", "2", "друго", "3", "треће"];
-	const cssClassName = "clsPersonDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idPerson-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getPersonDropDownBox(context) {
+	context.options = [
+		"-", "",
+		"1", "прво",
+		"2", "друго",
+		"3", "треће"];
+	context.classes = "clsPersonDropDownBox";
+	context.id = "idPerson-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Одричан глагол
-function getVerbNegateDropDownBox(selElem, selId) {
-	const array = ["-", "", "n", "негативан", "y", "позитиван"];
-	const cssClassName = "clsVerbNegateDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idVerbNegate-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getVerbNegateDropDownBox(context) {
+	context.options = [
+		"-", "",
+		"n", "негативан",
+		"y", "позитиван"];
+	context.classes = "clsVerbNegateDropDownBox";
+	context.id = "idVerbNegate-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Врста придева
-function getAdjectiveTypeDropDownBox(selElem, selId) {
-	const array = ["-", "", "g", "описни", "s", "присвојни", "p", "радни глаголски"];
-	const cssClassName = "clsAdjectiveTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdjectiveType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getAdjectiveTypeDropDownBox(context) {
+	context.options = [
+		"-", "",
+		"g", "описни",
+		"s", "присвојни",
+		"p", "радни глаголски"];
+	context.classes = "clsAdjectiveTypeDropDownBox";
+	context.id = "idAdjectiveType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Степен поређења придева
-function getAdjectiveDegreeDropDownBox(selElem, selId) {
-	const array = [
+function getAdjectiveDegreeDropDownBox(context) {
+	context.options = [
 		"-", "",
 		CONST_DEGREE_POSITIVE, "позитив",
 		CONST_DEGREE_COMPARATIVE, "компаратив",
 		CONST_DEGREE_SUPERLATIVE, "суперлатив"];
-	const cssClassName = "clsAdjectiveDegreeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdjectiveDegree-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsAdjectiveDegreeDropDownBox";
+	context.id = "idAdjectiveDegree-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Вид: одређени/неодређени
-function getDefinitenessDropDownBox(selElem, selId) {
-	const array = ["-", "", "n", "неодређени", "y", "одређени"];
-	const cssClassName = "clsDefinitenessDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idDefiniteness-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getDefinitenessDropDownBox(context) {
+	context.options = [
+		"-", "",
+		"n", "неодређени",
+		"y", "одређени"];
+	context.classes = "clsDefinitenessDropDownBox";
+	context.id = "idDefiniteness-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Врста заменице
-function getPronounTypeDropDownBox(selElem, selId) {
-	const array = [
+function getPronounTypeDropDownBox(context) {
+	context.options = [
 		"-", "",
 		"p", "лична",
 		"d", "показна",
@@ -244,150 +230,115 @@ function getPronounTypeDropDownBox(selElem, selId) {
 		"q", "упитна",
 		"r", "релативна",
 		"x", "повратна"];
-	const cssClassName = "clsPronounTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idPronounType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsPronounTypeDropDownBox";
+	context.id = "idPronounType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Врста прилога
-function getAdverbTypeDropDownBox(selElem, selId) {
-	var array = ["-", "", "g", "општи", "r", "глаголски садашњи", "p", "глаголски прошли"];
-	const cssClassName = "clsAdverbTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdverbType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getAdverbTypeDropDownBox(context) {
+	context.options = [
+		"-", "",
+		"g", "општи",
+		"r", "глаголски садашњи",
+		"p", "глаголски прошли"];
+	context.classes = "clsAdverbTypeDropDownBox";
+	context.id = "idAdverbType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Степен поређења придева
-function getAdverbDegreeDropDownBox(selElem, selId) {
-	const array = [
+function getAdverbDegreeDropDownBox(context) {
+	context.options = [
 		"-", "",
 		CONST_DEGREE_POSITIVE, "позитив",
 		CONST_DEGREE_COMPARATIVE, "компаратив",
 		CONST_DEGREE_SUPERLATIVE, "суперлатив"];
-	const cssClassName = "clsAdverbDegreeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdverbDegree-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsAdverbDegreeDropDownBox";
+	context.id = "idAdverbDegree-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 // Падеж предлога
-function getPrepositionCaseDropDownBox(selElem, selId) {
-	var array = [
+function getPrepositionCaseDropDownBox(context) {
+	context.options = [
 		"-", "",
 		CONST_CASE_GENITIVE, "генитив",
 		CONST_CASE_DATIVE, "датив",
 		CONST_CASE_ACCUSATIVE, "акузатив",
 		CONST_CASE_INSTRUMENTAL, "инструментал",
 		CONST_CASE_LOCATIVE, "локатив"];
-	const cssClassName = "clsPrepositionCaseDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idPrepositionCase-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsPrepositionCaseDropDownBox";
+	context.id = "idPrepositionCase-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 
-function getConjunctionTypeDropDownBox(selElem, selId) {
-	var array = ["-", "", "c", "саставни", "s", "зависни"];
-	const cssClassName = "clsConjunctionTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idConjunctionType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getConjunctionTypeDropDownBox(context) {
+	context.options = ["-", "", "c", "саставни", "s", "зависни"];
+	context.classes = "clsConjunctionTypeDropDownBox";
+	context.id = "idConjunctionType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 
-function getNumeralFormDropDownBox(selElem, selId) {
-	var array = ["-", "", "d", "цифарски", "r", "римски", "l", "словни"];
-	const cssClassName = "clsNumeralFormDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idNumeralForm-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getNumeralFormDropDownBox(context) {
+	context.options = [
+		"-", "",
+		"d", "цифарски",
+		"r", "римски",
+		"l", "словни"];
+	context.classes = "clsNumeralFormDropDownBox";
+	context.id = "idNumeralForm-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 
-function getNumeralTypeDropDownBox(selElem, selId) {
-	var array = ["-", "", "c", "основни", "o", "редни", "m", "вишеструки", "s", "посебни"];
-	const cssClassName = "clsNumeralTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idNumeralType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getNumeralTypeDropDownBox(context) {
+	context.options = [
+		"-", "",
+		"c", "основни",
+		"o", "редни",
+		"m", "вишеструки",
+		"s", "посебни"];
+	context.classes = "clsNumeralTypeDropDownBox";
+	context.id = "idNumeralType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 
-function getParticleTypeDropDownBox(selElem, selId) {
-	var array = ["-", "", "z", "одрична", "q", "упитна", "o", "модална", "r", "потврдна"];
-	const cssClassName = "clsParticleTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idParticleType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+function getParticleTypeDropDownBox(context) {
+	context.options = [
+		"-", "",
+		"z", "одрична",
+		"q", "упитна",
+		"o", "модална",
+		"r", "потврдна"];
+	context.classes = "clsParticleTypeDropDownBox";
+	context.id = "idParticleType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
 
-function getResidualTypeDropDownBox(selElem, selId) {
-	var array = [
+function getResidualTypeDropDownBox(context) {
+	context.options = [
 		"-", "",
 		CONST_RESIDUAL_TYPE_FOREIGN, "страно",
 		CONST_RESIDUAL_TYPE_WEB, "веб",
 		CONST_RESIDUAL_TYPE_EMO, "емотикон",
 		CONST_RESIDUAL_TYPE_HASHTAG, "хештег",
 		CONST_RESIDUAL_TYPE_AT, "ет"];
-	const cssClassName = "clsResidualTypeDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idResidualType-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsResidualTypeDropDownBox";
+	context.id = "idResidualType-" + context.index;
+	return getGenericDropDownBox(context);
 }
 
-function getDialectDropDownBox(selElem, selId) {
-	var array = [
+function getDialectDropDownBox(context) {
+	context.options = [
 		CONST_DIALECT_ALL, "оба",
 		CONST_DIALECT_EKAVIAN, "екавско",
 		CONST_DIALECT_IEKAVIAN, "ијекавско"];
-	const cssClassName = "clsDialectDropDownBox";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idDialect-" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
+	context.classes = "clsDialectDropDownBox";
+	context.id = "idDialect-" + context.index;
+	return getGenericDropDownBox(context);
 }
-
-/*
-function (selElem, selId) {
-	var array = ["", "", "", ""];
-	const cssClassName = "";
-	if (typeof selId !== CONST_UNDEFINED) {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem, "" + selId);
-	} else {
-		var sel = getGenericDropDownBox(array, cssClassName, selElem);
-	}
-	return sel;
-}
-*/

@@ -1,7 +1,7 @@
 // Gathers input as a string
 function gatherInput() {
     var tbl = document.getElementById("tblWords");
-    var msd, wordType, wordForm, id, dialect, index, description, delInDb;
+    var msd, wordType, wordForm, id, dialect, index, description, delInDb, hiddChanged;
     var output = "=========== ОДАВДЕ КОПИРАТИ ===========\n"; // Gather all output here
     var lemma = document.getElementById("lemma").value;
 
@@ -15,13 +15,7 @@ function gatherInput() {
         wordType = document.getElementById("idWordType-" + index).value;
         dialect = getDialect(CONST_OUTPUT_MSD, index);
         delInDb = document.getElementById(CONST_CHECKBOX_MARK_DELЕТЕ_ID + "-" + index).checked;
-
-
-        // Check if row is marked for deletion
-        if (delInDb && id !== "0") {
-            output += "БРИСАТИ " + id + "\n";
-            continue;
-        }
+        hiddChanged = document.getElementById("idChanged-" + index).value;
 
         // Determine what other elements to get
         switch( wordType ) {
@@ -76,14 +70,32 @@ function gatherInput() {
                 description = "Нема описа";
                 break;
         }
-        output += id + "|" + wordForm + "|" + lemma + "|" + wordType + msd + "|" + dialect + "|\n";
-        output += "-- " + description.trim() + ", наречје: " + getDialect(CONST_OUTPUT_DESCRIPTION, index) + "\n";
+        // Check if row is marked for deletion
+        if (delInDb && id !== "0") {
+            output += "БРИСАТИ " + id + "\n";
+            output += "-- " + description.trim() + ", " + getDialectVerbal(dialect, index) + " (" + lemma + ", " + wordForm +")\n";
+        } else {
+            if (hiddChanged == 'true') { // hidden input type, hence must compare with string
+                output += id + "|" + wordForm + "|" + lemma + "|" + wordType + msd + "|" + dialect + "|\n";
+                output += "-- " + description.trim() + ", " + getDialectVerbal(dialect, index) + "\n";
+            }
+        }
     }
     //console.log(output);
     output += "=========== ДОВДЕ КОПИРАТИ ===========";
     return output;
 }
 
+function getDialectVerbal(dialect, index) {
+    var dialectText = getDialect(CONST_OUTPUT_DESCRIPTION, index);
+    if (dialect === CONST_DIALECT_ALL) {
+        return dialectText + " наречја";
+    } else if (dialect === CONST_DIALECT_EKAVIAN || dialect === CONST_DIALECT_IEKAVIAN) {
+        return dialectText + " наречјe";
+    } else {
+        return "Непознати дијалект";
+    }
+}
 
 // именица
 function getNoun(type, index) {

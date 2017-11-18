@@ -57,6 +57,12 @@ const CONST_NOUN_TYPE_COLLECTIVE = "o"; // збирна именица
 const CONST_NOUN_TYPE_MASS       = "m"; // градивна именица
 
 // Verb types
+const CONST_VERB_TYPE_MAIN      = "m"; // главни
+const CONST_VERB_TYPE_AUXILIARY = "a"; // помоћни
+const CONST_VERB_TYPE_COPULA    = "c"; // односни
+const CONST_VERB_TYPE_REFLEXIVE = "r"; // повратни
+
+// Verb tenses
 const CONST_VERB_TENSE_INFINITIVE = "n"; // инфинитив
 const CONST_VERB_TENSE_PARTICIPLE = "p"; // партицип
 const CONST_VERB_TENSE_PRESENT    = "r"; // презент
@@ -82,9 +88,14 @@ const CONST_OUTPUT_DESCRIPTION = "description";
 
 // Word row
 const CONST_TR_CLASS_WORD_ROW = "clsWordRow";
+const CONST_TR_CLASS_COLUMN_ROW_NUMBER = "clsColumnRowNumber";
+const CONST_TD_COLUMN_ROW_NUMBER_ID = "idColumnRowNumber";
 
 // Check box for marking records for deletion in database
 const CONST_CHECKBOX_MARK_DELЕТЕ_ID = "idDelDb";
+
+// Choice box (drop-down box) constants
+const CONST_DROPDOWN_BOX_ONCHANGE_FUNCTION = "wordMetaCboxChanged";
 
 // check box label
 const CONST_LABEL_DEL_DB_ID = 'idDelDbLabel';

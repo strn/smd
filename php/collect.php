@@ -53,6 +53,7 @@
 				break;
 			case 'POST':
 				$data = $_POST['data'] ?? '';
+				$lemma = $_POST['lemma'] ?? '';
 				break;
 			default:
 				echo 'Unknown request method $method, aborting ...' . CONST_NL;
@@ -60,9 +61,14 @@
 		}
 	}
 	if ($data == '') {
-		echo "Form attribute 'data' was not defined, aborting.";
+		echo "Form attribute 'data' was not defined, aborting." . CONST_NL;
 		return;
 	}
+	if ($lemma == '') {
+		echo "Form attribute 'lemma' was not defined, aborting." . CONST_NL;
+		return;
+	}
+
 	$strArray = explode(CONST_NL_DELIMITER, $data);
 	$out = '';
 
@@ -94,8 +100,7 @@
 	unset($str);
 	if ($out != '') {
 		// Encode all in UTF-8 and send as email
-		$subj = $config['mail_subject'] . $_SERVER['REMOTE_ADDR'];
-		$subj = $subj . " (host " . gethostbyaddr($_SERVER['REMOTE_ADDR']) . ")";
+		$subj = sprintf($config['mail_subject'], $lemma, $_SERVER['REMOTE_ADDR'], gethostbyaddr($_SERVER['REMOTE_ADDR']));
 		$subject = "=?UTF-8?B?" . base64_encode($subj) . "?=";
 		$headers = "MIME-Version: 1.0" . "\r\n" . "Content-type: text/plain; charset=UTF-8" . "\r\n";
 		mail($config['mail_recipient'], $subject, $out, $headers);
