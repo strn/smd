@@ -29,8 +29,8 @@
         </div>
         <br/>
         <table id="tblWords"></table> <!-- Table to hold words and lemmas -->
-        <br/>
         <div id="errorMessage"></div> <!-- Error message if the word is not found in database -->
+        <br/>
         <div id="divAdd"> <!-- Block for selecting new word type and button to add it -->
             <div id="resultMessage"></div>
             <div id="divAddWord"></div>
@@ -38,7 +38,7 @@
         </div>
         <div id="divGenerate"> <!-- Block for generating DB entries -->
             <input type="submit" id="btnGenerateText" value=" Прикажи ставке за базу података " onclick="displayEntries()"/>&nbsp;&nbsp;&nbsp;
-            <input type="submit" id="btnGenerateEmail" value=" Пошаљи ставке за базу података имејлом " onclick="sendEntriesByEmail()"/>
+            <input type="submit" id="btnGenerateEmail" value=" Пошаљи ставке за базу података " onclick="sendEntries()"/>
             <br/>
         </div>
         <pre id="preOutput"/>

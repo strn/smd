@@ -166,9 +166,9 @@ function getAdverbWidgets(result, index) {
 	cw.appendChild(getAdverbTypeDropDownBox(result.msd.type, index));
 	cw.innerHTML += ' степен&nbsp;';
 	if (result.msd.degree !== CONST_UNDEFINED) {
-		cw.appendChild(getAdjectiveDegreeDropDownBox(result.msd.degree, index));
+		cw.appendChild(getAdverbDegreeDropDownBox(result.msd.degree, index));
 	} else {
-		cw.appendChild(getAdjectiveDegreeDropDownBox("", index));
+		cw.appendChild(getAdverbDegreeDropDownBox("", index));
 	}
 	return cw;
 }

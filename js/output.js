@@ -1,7 +1,7 @@
 // Gathers input as a string
 function gatherInput() {
     var tbl = document.getElementById("tblWords");
-    var msd, wordType, wordForm, id, dialect, index, description;
+    var msd, wordType, wordForm, id, dialect, index, description, delInDb;
     var output = "=========== ОДАВДЕ КОПИРАТИ ===========\n"; // Gather all output here
     var lemma = document.getElementById("lemma").value;
 
@@ -14,6 +14,14 @@ function gatherInput() {
         wordForm = document.getElementById("idWordForm-" + index).value;
         wordType = document.getElementById("idWordType-" + index).value;
         dialect = getDialect(CONST_OUTPUT_MSD, index);
+        delInDb = document.getElementById(CONST_CHECKBOX_MARK_DELЕТЕ_ID + "-" + index).checked;
+
+
+        // Check if row is marked for deletion
+        if (delInDb && id !== "0") {
+            output += "БРИСАТИ " + id + "\n";
+            continue;
+        }
 
         // Determine what other elements to get
         switch( wordType ) {
@@ -69,7 +77,7 @@ function gatherInput() {
                 break;
         }
         output += id + "|" + wordForm + "|" + lemma + "|" + wordType + msd + "|" + dialect + "|\n";
-        output += "-- " + description + ", наречје: " + getDialect(CONST_OUTPUT_DESCRIPTION, index) + "\n";
+        output += "-- " + description.trim() + ", наречје: " + getDialect(CONST_OUTPUT_DESCRIPTION, index) + "\n";
     }
     //console.log(output);
     output += "=========== ДОВДЕ КОПИРАТИ ===========";
@@ -143,6 +151,7 @@ function getGenericData(type, arr, index) {
     var ret = "";
     var sel;
     var wordType = getWordType(index);
+    //console.log("getGenericData: type=" + type + ", arr=" + arr + ", index=" + index);
 
     for (var i = 0; i < arr.length; i++) {
         //console.log("i: " + i + ", arr[i]: " + arr[i])
@@ -163,12 +172,16 @@ function getGenericData(type, arr, index) {
 }
 
 
+// Get a single character selected in dropdown box
+// holding word types
 function getWordType(index) {
     var sel = document.getElementById( "idWordType-" + index );
     return sel.options[sel.selectedIndex].text;
 }
 
 
+// Get a single letter or text selected in dropdown box
+// that holds dialects
 function getDialect(type, index) {
     var sel = document.getElementById("idDialect-" + index);
     if (type === CONST_OUTPUT_MSD) {
@@ -184,8 +197,16 @@ function getDialect(type, index) {
 // Strips longest uninterrupted dash substring
 // from right
 function stripRightDashes(str) {
-    // TODO
-    return str;
+    if (str === CONST_UNDEFINED) {
+        return "";
+    }
+    var i, ret = str.trim();
+    for (i = ret.length-1; i >= 0; i--) {
+        if (ret.charAt(i) !== "-") {
+            break;
+        }
+    }
+    return ret.slice(0, i+1);
 }
 
 
@@ -197,7 +218,27 @@ function displayEntries() {
 }
 
 
-// Sends gathered input via email
-function sendEntriesByEmail() {
-    // body...
+function sendEntries() {
+
+    var xhttp = new XMLHttpRequest();
+    var preOutputText = document.getElementById("preOutput").innerHTML;
+    var resultMessage = document.getElementById("resultMessage");
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            alert("Подаци су успешно пренети.");
+            //resultMessage.innerHTML = this.responseText;
+        }
+        if (this.readyState == 4 && this.status == 404) {
+            alert("Дошло је до грешке приликом слања.");
+        }
+    };
+
+    if (preOutputText.length === 0) {
+        alert("Притисните прво дугме 'Прикажи ставке за базу података'.");
+    } else {
+        xhttp.open("POST", "/php/smd/collect.php", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhttp.send("data=" + preOutputText);
+    }
 }

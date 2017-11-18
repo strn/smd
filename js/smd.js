@@ -115,7 +115,7 @@ function createWordsHeader() {
 function addWordWidgets(result, index) {
     var rowTr = document.createElement("tr");
     rowTr.id = 'idWordRow-' + index;
-    rowTr.className = "clsWordRow";
+    rowTr.className = CONST_TR_CLASS_WORD_ROW;
 
     // Assemble row together
     var tblWords = document.getElementById("tblWords");
@@ -233,10 +233,12 @@ function getNavButtons(index) {
     var checkbox = document.createElement('input');
     checkbox.type = "checkbox";
     checkbox.name = "DelDb-" + index;
-    checkbox.id = "idDelDb-" + index;
+    checkbox.id = CONST_CHECKBOX_MARK_DELЕТЕ_ID + "-" + index;
+    checkbox.setAttribute('onchange', "delRowChanged(this, " + index + ")");
     var label = document.createElement('label')
+    label.id = CONST_LABEL_DEL_DB_ID + '-' + index;
     label.setAttribute("for", checkbox.id);
-    label.innerHTML = 'Обрисати из базе';
+    label.innerHTML = CONST_LABEL_DEL_DB_TEXT;
     tdNavButtons.appendChild(checkbox);
     tdNavButtons.appendChild(label);
     tdNavButtons.innerHTML += '<br/>';
@@ -309,4 +311,14 @@ function getEmptyMSD(wordType) {
 
 function onLoad() {
     document.getElementById("divGenerate").style.display = 'none';
+}
+
+// Reacts on checkbox state
+function delRowChanged(checkbox, index) {
+    var delDbLabel = document.getElementById(CONST_LABEL_DEL_DB_ID + '-' + index);
+    if (checkbox.checked) {
+        delDbLabel.style = CONST_LABEL_DEL_DB_STYLE_HIGHLIGHT;
+    } else {
+        delDbLabel.style = '';
+    }
 }

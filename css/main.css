@@ -5,10 +5,12 @@ html, body {
 	width: 100%
 	margin: 10px;
 }
+
 h1 {
 	color: maroon;
 	text-align: center;
 }
+
 input, button, select {
 	font-size: 95%;
 	font-family: inherit;
@@ -54,4 +56,6 @@ tr:nth-child(odd) {background: FLORALWHITE}
 	border-collapse: collapse;
 }
 
-
+.clsWordRowSelected {
+	background-color: red;
+}

@@ -26,7 +26,7 @@
 		header('X-Input-Word: null', true, 404);
 		return;
 	} else {
-		if ( ! preg_match('/^[0-9абвгдђежзијклљмнњопрстћуфхцчџшАБВГДЂЕЖЗИЈКЛЉМНЊОПРСТЋУФХЦЧЏШCDIMVX \-]+$/', $word) ) {
+		if ( ! preg_match('/^[0-9абвгдђежзијклљмнњопрстћуфхцчџшАБВГДЂЕЖЗИЈКЛЉМНЊОПРСТЋУФХЦЧЏШCDIMVX\-]+$/', $word) ) {
 			header("X-Invalid-Input-Word: " . $word, true, 404);
 			return;
 		}

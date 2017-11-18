@@ -13,6 +13,7 @@ COMMENT ON COLUMN word_sources.url IS 'Место на мрежи';
 
 INSERT INTO word_sources VALUES ('lex', 'Корпус српског језика', '');
 INSERT INTO word_sources VALUES ('wic', 'Викиречник српског језика', '');
+INSERT INTO word_sources VALUES ('web', 'Мрежна страница за додавање', '');
 
 CREATE TABLE IF NOT EXISTS words (
 	id BIGSERIAL PRIMARY KEY,

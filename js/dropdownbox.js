@@ -207,7 +207,11 @@ function getAdjectiveTypeDropDownBox(selElem, selId) {
 
 // Степен поређења придева
 function getAdjectiveDegreeDropDownBox(selElem, selId) {
-	const array = ["-", "", "p", "позитив", "c", "компаратив", "s", "суперлатив"];
+	const array = [
+		"-", "",
+		CONST_DEGREE_POSITIVE, "позитив",
+		CONST_DEGREE_COMPARATIVE, "компаратив",
+		CONST_DEGREE_SUPERLATIVE, "суперлатив"];
 	const cssClassName = "clsAdjectiveDegreeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdjectiveDegree-" + selId);
@@ -255,6 +259,22 @@ function getAdverbTypeDropDownBox(selElem, selId) {
 	const cssClassName = "clsAdverbTypeDropDownBox";
 	if (typeof selId !== CONST_UNDEFINED) {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdverbType-" + selId);
+	} else {
+		var sel = getGenericDropDownBox(array, cssClassName, selElem);
+	}
+	return sel;
+}
+
+// Степен поређења придева
+function getAdverbDegreeDropDownBox(selElem, selId) {
+	const array = [
+		"-", "",
+		CONST_DEGREE_POSITIVE, "позитив",
+		CONST_DEGREE_COMPARATIVE, "компаратив",
+		CONST_DEGREE_SUPERLATIVE, "суперлатив"];
+	const cssClassName = "clsAdverbDegreeDropDownBox";
+	if (typeof selId !== CONST_UNDEFINED) {
+		var sel = getGenericDropDownBox(array, cssClassName, selElem, "idAdverbDegree-" + selId);
 	} else {
 		var sel = getGenericDropDownBox(array, cssClassName, selElem);
 	}
