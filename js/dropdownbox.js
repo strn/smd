@@ -112,8 +112,8 @@ function getCaseDropDownBox(context) {
 function getAnimateDropDownBox(context) {
 	context.options = [
 		"-", "",
-		"n", "предмет",
-		"y", "живо биће"];
+		"n", "неживо",
+		"y", "живо"];
 	context.classes = "clsAnimateDropDownBox";
 	context.id = "idAnimate-" + context.index;
 	return getGenericDropDownBox(context);
@@ -177,8 +177,8 @@ function getPersonDropDownBox(context) {
 function getVerbNegateDropDownBox(context) {
 	context.options = [
 		"-", "",
-		"n", "негативан",
-		"y", "позитиван"];
+		"n", "одричан",
+		"y", "потврдан"];
 	context.classes = "clsVerbNegateDropDownBox";
 	context.id = "idVerbNegate-" + context.index;
 	return getGenericDropDownBox(context);
