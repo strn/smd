@@ -177,8 +177,8 @@ function getPersonDropDownBox(context) {
 function getVerbNegateDropDownBox(context) {
 	context.options = [
 		"-", "",
-		"n", "одричан",
-		"y", "потврдан"];
+		"n", "није",
+		"y", "јесте"];
 	context.classes = "clsVerbNegateDropDownBox";
 	context.id = "idVerbNegate-" + context.index;
 	return getGenericDropDownBox(context);

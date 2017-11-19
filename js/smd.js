@@ -12,6 +12,9 @@ function getWord() {
     var inpLemma = document.getElementById("lemma");
     var divGenerate = document.getElementById("divGenerate");
     var preOutput = document.getElementById("preOutput");
+    var selWordType = document.getElementById("idSelWordType").value;
+    var selDialect = document.getElementById("idSelDialect").value;
+
 
     resultMessage.innerHTML = "", errorMessage.innerHTML = "";
 
@@ -49,7 +52,7 @@ function getWord() {
     if ( status != "" ) {
         alert(status);
     } else {
-    	xhttp.open("GET", "/php/smd/findword.php?word=" + word.trim(), true);
+    	xhttp.open("GET", "/php/smd/findword.php?word=" + word.trim() + "&type=" + selWordType + "&dialect=" + selDialect, true);
     	xhttp.send();
     }
 }

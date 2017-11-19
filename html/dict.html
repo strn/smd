@@ -25,7 +25,25 @@
             </ul>
             <label>Реч:</label>&nbsp;<input type="text" id="word"/>&nbsp;
             <input type="hidden" id="lemma"/>
-            <input type="submit" id="btnFind" value=" Тражи " onclick="getWord()"/>
+            <label>Врста:</label>
+            <select id="idSelWordType">
+                <option value="" selected="selected">Било која</option>
+                <option value="N">Именица</option>
+                <option value="P">Заменица</option>
+                <option value="A">Придев</option>
+                <option value="M">Број</option>
+                <option value="V">Глагол</option>
+                <option value="R">Прилог</option>
+                <option value="S">Предлог</option>
+                <option value="C">Везник</option>
+                <option value="I">Узвик</option>
+                <option value="Q">Речца</option>
+                <option value="Y">Скраћеница</option>
+                <option value="X">Остало</option>
+            </select>&nbsp;
+            <label>Наречје:</label>
+            <select id="idSelDialect"><option value="" selected="selected">оба</option><option value="e">екавско</option><option value="i">ијекавско</option></select>&nbsp;
+            <input type="submit" id="btnFind" value="  Тражи  " onclick="getWord()"/>
         </div>
         <br/>
         <table id="tblWords"></table> <!-- Table to hold words and lemmas -->
@@ -38,7 +56,7 @@
         </div>
         <div id="divGenerate"> <!-- Block for generating DB entries -->
             <input type="submit" id="btnGenerateText" value=" Прикажи ставке за базу података " onclick="displayEntries()"/>&nbsp;
-            <input type="checkbox" id="idCheckDeleteOnly" /> <label>Само за брисање</label>&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="idCheckDeleteOnly" /> <label>Прикажи ставке само за брисање</label>&nbsp;&nbsp;&nbsp;
             <input type="submit" id="btnGenerateEmail" value=" Пошаљи ставке за базу података " onclick="sendEntries()"/>
             <br/>
         </div>
