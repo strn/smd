@@ -38,7 +38,7 @@
 			$ret = $ret . ", dialect = '" . $strArray[4] . "'";
 		}
 		$ret = $ret . " WHERE id = ";
-		$ret = $ret . $strArray[0] . CONST_NL . ";";
+		$ret = $ret . $strArray[0] . ";" . CONST_NL;
 		return $ret;
 	}
 
