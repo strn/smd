@@ -14,11 +14,12 @@ function getWord() {
     var preOutput = document.getElementById("preOutput");
     var selWordType = document.getElementById("idSelWordType").value;
     var selDialect = document.getElementById("idSelDialect").value;
-
+    var body = document.getElementById("idBody");
 
     resultMessage.innerHTML = "", errorMessage.innerHTML = "";
 
     xhttp.onreadystatechange = function() {
+        body.style.cursor = "default";
         if (this.readyState == 4 && this.status == 200) {
             // Expect JSON array
             var res = JSON.parse(this.responseText);
@@ -54,6 +55,7 @@ function getWord() {
     } else {
     	xhttp.open("GET", "/php/smd/findword.php?word=" + word.trim() + "&type=" + selWordType + "&dialect=" + selDialect, true);
     	xhttp.send();
+        body.style.cursor = "progress";
     }
 }
 
@@ -354,4 +356,11 @@ function delDbRowChanged(checkbox, index) {
 function onWordFormChange(textfield, index) {
     var hiddChanged = document.getElementById("idChanged-" + index);
     hiddChanged.value = true;
+}
+
+function handleEnter(e){
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+    if (keycode == '13') {
+        getWord();
+    }
 }

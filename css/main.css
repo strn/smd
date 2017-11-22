@@ -64,3 +64,7 @@ tr:nth-child(odd) {background: FLORALWHITE}
 	font-size: 50%;
 	text-align: center;
 }
+
+textarea {
+	width: 100%;
+}
