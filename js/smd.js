@@ -14,6 +14,7 @@ function getWord() {
     var preOutput = document.getElementById("preOutput");
     var selWordType = document.getElementById("idSelWordType").value;
     var body = document.getElementById("idBody");
+    var result = {};
 
     resultMessage.innerHTML = "", errorMessage.innerHTML = "";
 
@@ -24,7 +25,9 @@ function getWord() {
             var res = JSON.parse(this.responseText);
             //console.log("Response: " + res);
             if (res.length == 0) {
-                resultMessage.innerHTML = "Реч „" + word + "“ није нађена. Ако желите да је додате, изаберите врсту речи и кликните на дугме „Додај“.";
+                resultMessage.innerHTML = "Реч „" + word + "“ не постоји у речнику. ";
+                resultMessage.innerHTML += "Ако желите да је додате, изаберите врсту речи и кликните на дугме „Додај“. ";
+                resultMessage.innerHTML += "Такође, можете да изаберете „пречицу“ из понуђене листе претходно дефинисаних ставки.";
                 divAdd.style.display = 'block';
                 divGenerate.style.display = 'none';
                 divAddWord.innerHTML = '';
@@ -53,7 +56,13 @@ function getWord() {
     if ( status != "" ) {
         alert(status);
     } else {
-        var result = JSON.parse(meta.getRowMetadata(selWordType, CONST_ID_SEARCH_WIDGETS));
+        if (selWordType === '') {
+            result.msd = '';
+            result.dialect = '';
+        } else {
+            result = JSON.parse(meta.getRowMetadata(selWordType, CONST_ID_SEARCH_WIDGETS));
+        }
+        //console.log("result: " + JSON.stringify(result));
         var msd = result.msd.replace(/\-/g, "_") + "%";
         //console.log("getWord: word=" + word.trim() + " original msd=" + result.msd + " msd=" + msd + " dialect=" + result.dialect);
     	xhttp.open("GET", "/php/smd/findword.php?word=" + word.trim() + "&msd=" + msd + "&dialect=" + result.dialect, true);
@@ -65,7 +74,7 @@ function getWord() {
 // Creates widgets for adding word
 function addAddWordWidgets(word) {
     var divAddWord = document.getElementById("divAddWord");
-    divAddWord.innerHTML += 'Врста речи:&nbsp;';
+    divAddWord.innerHTML += 'Врста речи&nbsp;';
     var ddbWordType = ddbox.getWordType({selected: "N", index:"main"});
     divAddWord.appendChild(ddbWordType);
     divAddWord.innerHTML += '&nbsp;';
@@ -76,19 +85,29 @@ function addAddWordWidgets(word) {
     btnAddWord.value = " Додај ";
     btnAddWord.setAttribute( "onclick", "addNonExistentWord('" + word +"')" );
     divAddWord.appendChild(btnAddWord);
+    divAddWord.innerHTML += '&nbsp;Раније дефинисане ставке&nbsp;';
+
+    divAddWord.appendChild(ddbox.getPredefinedItems());
 }
 
 
 // Add word that does not exist in database
 function addNonExistentWord(word) {
+    var ddboxPredefined = document.getElementById(CONST_DDBOX_ID_PREDEFINED_ITEMS + "-" + CONST_ID_SEARCH_WIDGETS);
     createWordsHeader();
-    // Get word type from main word type selector
-    var wordType = document.getElementById("idSelWordType").value;
-    result = getEmptyMSD(wordType, word);
-    console.log("addNonExistentWord: result=" + JSON.stringify(result));
-    addWordWidgets(result, 0);
-    var hiddChanged = document.getElementById("idChanged-0");
-    hiddChanged.value = true;
+    // See if user picked predefined item
+    if (ddboxPredefined.value === "") {
+        // Get word type from main word type selector
+        var wordType = document.getElementById("idSelWordType").value;
+        result = getEmptyMSD(wordType, word);
+        //console.log("addNonExistentWord: result=" + JSON.stringify(result));
+        addWordWidgets(result, 0);
+        var hiddChanged = document.getElementById("idChanged-0");
+        hiddChanged.value = true;
+
+    } else {
+        fillWithPredefinedValues(ddboxPredefined.value, word);
+    }
     disableNewWordFields();
     document.getElementById("divGenerate").style.display = 'block';
 }
@@ -306,9 +325,13 @@ function addWordRow(index) {
     // Add lemma as word form, thus helping operator entering data
     result.wordform = document.getElementById("lemma").value;
     result.id = 0;
-    console.log("addWordRow: result="+ JSON.stringify(result));
-    addWordWidgets(result, index+1);
-    var hiddChanged = document.getElementById("idChanged-" + (index+1));
+    //console.log("addWordRow: result="+ JSON.stringify(result));
+    // Add row with index equal to number of rows in table
+    var tableRows = document.getElementById("tblWords").rows.length-1;
+    //addWordWidgets(result, index+1);
+    addWordWidgets(result, tableRows);
+    //var hiddChanged = document.getElementById("idChanged-" + (index+1));
+    var hiddChanged = document.getElementById("idChanged-" + tableRows);
     hiddChanged.value = true;
 }
 
@@ -354,11 +377,16 @@ function handleEnter(e){
 function wordTypeSelected(ddbox) {
     var div = document.getElementById("idSearchWidgets");
     var w, mw;
-    result = getEmptyMSD(ddbox.value, '');
-    mw = getWordMetaWidgets(result, CONST_ID_SEARCH_WIDGETS);
-    div.innerHTML = mw.innerHTML;
-    w = document.getElementById(CONST_LABEL_WORD_TYPE_ID + "-" + CONST_ID_SEARCH_WIDGETS);
-    w.style.display = 'none';
-    w = document.getElementById("idWordType-" + CONST_ID_SEARCH_WIDGETS);
-    w.style.display = 'none';
+    var ddValue = ddbox.value;
+    if (ddValue !== '') {
+        result = getEmptyMSD(ddValue, '');
+        mw = getWordMetaWidgets(result, CONST_ID_SEARCH_WIDGETS);
+        div.innerHTML = mw.innerHTML;
+        w = document.getElementById(CONST_LABEL_WORD_TYPE_ID + "-" + CONST_ID_SEARCH_WIDGETS);
+        w.style.display = 'none';
+        w = document.getElementById("idWordType-" + CONST_ID_SEARCH_WIDGETS);
+        w.style.display = 'none';
+    } else {
+        div.innerHTML = '';
+    }
 }

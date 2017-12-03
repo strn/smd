@@ -103,3 +103,9 @@ const CONST_LABEL_DEL_DB_TEXT = " Обрисати из базе ";
 const CONST_LABEL_DEL_DB_STYLE_HIGHLIGHT = "background-color: red; color: white; font-weight: bold;";
 const CONST_LABEL_WORD_TYPE_ID = 'idLblWordType';
 const CONST_ID_SEARCH_WIDGETS = 99999;
+
+// Drop down values for predefined items
+const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_MASCULINE = "nounProperMasculine";
+const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_FEMININE = "nounProperFeminine";
+
+const CONST_DDBOX_ID_PREDEFINED_ITEMS = "idPredefinedItems";

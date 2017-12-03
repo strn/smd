@@ -348,5 +348,18 @@ var ddbox = (function() {
 		hiddChanged.value = true;
 	};
 
+	// Creates drop-down box with predefined items
+	my.getPredefinedItems = function() {
+		var context = {};
+		context.options = [
+			"", "",
+			CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_MASCULINE, "Властита именица мушког рода",
+			CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_FEMININE, "Властита именица женског рода"
+		];
+		context.index = CONST_ID_SEARCH_WIDGETS;
+		context.id = CONST_DDBOX_ID_PREDEFINED_ITEMS + "-" + context.index;
+		return my.getGeneric(context);
+	};
+
 	return my;
 }());

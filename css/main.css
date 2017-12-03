@@ -20,6 +20,7 @@ table,th,td {
 	border:2px solid maroon;
 }
 
+
 #findWord ul {
 	vertical-align: middle;
 }
@@ -28,17 +29,10 @@ table,th,td {
 #resultMessage {
 	color: green;
 	background: white;
-	width: 70%;
-	float: left;
 }
 
 #divAdd {
 	width: 100%;
-}
-
-#divAddWord {
-	width: 29%;
-	float: right;
 }
 
 #errorMessage {
@@ -51,7 +45,7 @@ tr:nth-child(odd) {background: FLORALWHITE}
 
 
 /* Word table and its components */
-#tblWords {
+table {
 	width: 100%;
 	border-collapse: collapse;
 }
@@ -67,4 +61,10 @@ tr:nth-child(odd) {background: FLORALWHITE}
 
 textarea {
 	width: 100%;
+}
+
+#btnFind {
+	background-color: maroon;
+	color: linen;
+	font-weight: bold;
 }

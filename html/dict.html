@@ -11,6 +11,7 @@
         <script src="/js/smd/smd.js"></script>
         <script src="/js/smd/validate.js"></script>
         <script src="/js/smd/output.js"></script>
+        <script src="/js/smd/predefined.js"></script>
     </head>
 
     <body id="idBody" onload="onLoad()">
@@ -42,18 +43,23 @@
                 <option value="X">Остало</option>
             </select>
             <br/><br/>
-            <div id="idSearchWidgets"></div>
-            <input type="submit" id="btnFind" value="  Тражи  " onclick="getWord()"/>
+            <table>
+                <tr>
+                    <td><div id="idSearchWidgets"></div></td>
+                    <td>&nbsp;&nbsp;&nbsp;<input type="submit" id="btnFind" value="  Тражи  " onclick="getWord()"/>&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+            </table>
         </div>
         <br/>
         <table id="tblWords"></table> <!-- Table to hold words and lemmas -->
         <div id="errorMessage"></div> <!-- Error message if the word is not found in database -->
         <br/>
-        <div id="divAdd"> <!-- Block for selecting new word type and button to add it -->
-            <div id="resultMessage"></div>
+        <div id="divAdd">
+            <!-- Block for selecting new word type and button to add it -->
+            <div id="resultMessage"></div><br/>
             <div id="divAddWord"></div>
-            <br/>
         </div>
+        <br/>
         <div id="divGenerate"> <!-- Block for generating DB entries -->
             <input type="submit" id="btnGenerateText" value=" Прикажи ставке за базу података " onclick="displayEntries()"/>&nbsp;
             <input type="checkbox" id="idCheckDeleteOnly" /> <label>Прикажи ставке само за брисање</label>&nbsp;&nbsp;&nbsp;
