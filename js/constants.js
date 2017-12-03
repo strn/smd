@@ -95,9 +95,11 @@ const CONST_TD_COLUMN_ROW_NUMBER_ID = "idColumnRowNumber";
 const CONST_CHECKBOX_MARK_DELЕТЕ_ID = "idDelDb";
 
 // Choice box (drop-down box) constants
-const CONST_DROPDOWN_BOX_ONCHANGE_FUNCTION = "wordMetaCboxChanged";
+const CONST_DROPDOWN_BOX_ONCHANGE_FUNCTION = "ddbox.wordMetaCboxChanged";
 
 // check box label
 const CONST_LABEL_DEL_DB_ID = 'idDelDbLabel';
 const CONST_LABEL_DEL_DB_TEXT = " Обрисати из базе ";
 const CONST_LABEL_DEL_DB_STYLE_HIGHLIGHT = "background-color: red; color: white; font-weight: bold;";
+const CONST_LABEL_WORD_TYPE_ID = 'idLblWordType';
+const CONST_ID_SEARCH_WIDGETS = 99999;

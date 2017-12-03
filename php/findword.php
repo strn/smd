@@ -2,17 +2,17 @@
 	require("config.php"); // Configuration
 	require("db2fe.php"); // Load function to convert MSD tag
 
-	// Functio determines what query to return
+	// Function determines what query to return
 	// based on arguments passed
-	function get_query_params($word, $type, $dialect, $config) {
+	function get_query_params($word, $msd, $dialect, $config) {
 		$retArr = array(':lemma' => $word);
-		if ($type != null) {
-			$retArr[ ':wordtype' ] = $type . '%';
+		if ($msd != null) {
+			$retArr[ ':msd' ] = $msd;
 			if ($dialect != null) {
 				$retArr[ ':dialect' ] = $dialect;
-				return array( $config[ 'qry_lemma_type_dialect' ], $retArr );
+				return array( $config[ 'qry_lemma_msd_dialect' ], $retArr );
 			} else {
-				return array( $config[ 'qry_lemma_type' ], $retArr );
+				return array( $config[ 'qry_lemma_msd' ], $retArr );
 			}
 		} else {
 			if ($dialect != null) {
@@ -49,13 +49,13 @@
 	}
 
 	// Word is OK, get other parameters
-	$type = $request['type'];
+	$msd = $request['msd'];
 	$dialect = $request['dialect'];
 	$connstr = 'pgsql:dbname=' . $config['dbname'] . ';user=' . $config[ 'user' ];
 	$connstr = $connstr . ';host=' . $config[ 'host' ] . ';port=' . $config[ 'port' ];
 	$pdo = new PDO($connstr);
 
-	$qry_params = get_query_params($word, $type, $dialect, $config);
+	$qry_params = get_query_params($word, $msd, $dialect, $config);
 	$sth = $pdo->prepare($qry_params[0]);
 	$sth->execute($qry_params[1]);
 

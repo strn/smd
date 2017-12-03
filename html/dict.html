@@ -6,10 +6,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" media="all" href="/css/smd/main.css">
         <script src="/js/smd/constants.js"></script>
-        <script src="/js/smd/smd.js"></script>
         <script src="/js/smd/dropdownbox.js"></script>
-        <script src="/js/smd/validate.js"></script>
         <script src="/js/smd/wordmetadata.js"></script>
+        <script src="/js/smd/smd.js"></script>
+        <script src="/js/smd/validate.js"></script>
         <script src="/js/smd/output.js"></script>
     </head>
 
@@ -23,10 +23,10 @@
                 <li>Глагол у инфинитиву (највећим делом)</li>
                 <li>Прилог, предлог, везник, узвик или речцу</li>
             </ul>
-            <label>Реч:</label>&nbsp;<input type="text" id="word" onkeydown="handleEnter(event)" />&nbsp;
+            <label>Реч</label>&nbsp;<input type="text" id="word" onkeydown="handleEnter(event)" />
             <input type="hidden" id="lemma"/>
-            <label>Врста:</label>
-            <select id="idSelWordType">
+            <label>Врста</label>&nbsp;
+            <select id="idSelWordType" onchange="wordTypeSelected(this)">
                 <option value="" selected="selected">Било која</option>
                 <option value="N">Именица</option>
                 <option value="P">Заменица</option>
@@ -40,9 +40,9 @@
                 <option value="Q">Речца</option>
                 <option value="Y">Скраћеница</option>
                 <option value="X">Остало</option>
-            </select>&nbsp;
-            <label>Наречје:</label>
-            <select id="idSelDialect"><option value="" selected="selected">оба</option><option value="e">екавско</option><option value="i">ијекавско</option></select>&nbsp;
+            </select>
+            <br/><br/>
+            <div id="idSearchWidgets"></div>
             <input type="submit" id="btnFind" value="  Тражи  " onclick="getWord()"/>
         </div>
         <br/>

@@ -31,20 +31,12 @@ CREATE OR REPLACE VIEW wic_not_in_lex_vw AS
 COMMENT ON VIEW wic_not_in_lex_vw IS 'Речи са Википедије које нису у корпусу';
 
 CREATE OR REPLACE VIEW ekavian_synth_dict_vw AS
-	SELECT words.wordform, words.lemma, words.msd
+	SELECT words.wordform, words.lemma, words.msd, words.frequency
 	  FROM words
 	 WHERE words.dialect IN ('e', 'E', 'е', 'Е') OR words.dialect IS NULL
   ORDER BY words.wordform;
 
 COMMENT ON VIEW ekavian_synth_dict_vw IS 'Екавски синтетички речник';
-
-CREATE OR REPLACE VIEW ekavian_synth_dict_freq_vw AS
-  SELECT '<w f="' || words.frequency || '" flags="">' || words.wordform || '</w>' AS word_frequency
-    FROM words
-   WHERE words.dialect IN ('e', 'E', 'е', 'Е') OR words.dialect IS NULL
-  ORDER BY words.wordform;
-
-COMMENT ON VIEW ekavian_synth_dict_freq_vw IS 'Екавски синтетички речник са учестаностима';
 
 CREATE OR REPLACE VIEW ekavian_hunspell_dict_vw AS
 	SELECT DISTINCT words.wordform
@@ -54,26 +46,18 @@ CREATE OR REPLACE VIEW ekavian_hunspell_dict_vw AS
 
 COMMENT ON VIEW ekavian_hunspell_dict_vw IS 'Екавски HUNSPELL речник';
 
-CREATE OR REPLACE VIEW iekavian_synth_dict_vw AS
-    SELECT words.wordform, words.lemma, words.msd
+CREATE OR REPLACE VIEW jekavian_synth_dict_vw AS
+    SELECT words.wordform, words.lemma, words.msd, words.frequency
 	  FROM words
 	 WHERE words.dialect IN ('i', 'I', 'и', 'И') OR words.dialect IS NULL
   ORDER BY words.wordform;
 
-COMMENT ON VIEW iekavian_synth_dict_vw IS 'Ијекавски синтетички речник';
+COMMENT ON VIEW jekavian_synth_dict_vw IS 'Ијекавски синтетички речник';
 
-CREATE OR REPLACE VIEW iekavian_synth_dict_freq_vw AS
-    SELECT words.wordform, words.lemma, words.msd, words.frequency
-    FROM words
-   WHERE words.dialect IN ('i', 'I', 'и', 'И') OR words.dialect IS NULL
-  ORDER BY words.lemma, words.wordform;
-
-COMMENT ON VIEW iekavian_synth_dict_freq_vw IS 'Ијекавски синтетички речник са учестаностима';
-
-CREATE OR REPLACE VIEW iekavian_hunspell_dict_vw AS
+CREATE OR REPLACE VIEW jekavian_hunspell_dict_vw AS
     SELECT DISTINCT words.wordform
 	  FROM words
 	 WHERE words.dialect IN ('i', 'I', 'и', 'И') OR words.dialect IS NULL
   ORDER BY words.wordform;
 
-COMMENT ON VIEW iekavian_hunspell_dict_vw IS 'Ијекавски HUNSPELL речник';
+COMMENT ON VIEW jekavian_hunspell_dict_vw IS 'Ијекавски HUNSPELL речник';

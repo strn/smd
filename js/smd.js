@@ -13,7 +13,6 @@ function getWord() {
     var divGenerate = document.getElementById("divGenerate");
     var preOutput = document.getElementById("preOutput");
     var selWordType = document.getElementById("idSelWordType").value;
-    var selDialect = document.getElementById("idSelDialect").value;
     var body = document.getElementById("idBody");
 
     resultMessage.innerHTML = "", errorMessage.innerHTML = "";
@@ -23,6 +22,7 @@ function getWord() {
         if (this.readyState == 4 && this.status == 200) {
             // Expect JSON array
             var res = JSON.parse(this.responseText);
+            //console.log("Response: " + res);
             if (res.length == 0) {
                 resultMessage.innerHTML = "Реч „" + word + "“ није нађена. Ако желите да је додате, изаберите врсту речи и кликните на дугме „Додај“.";
                 divAdd.style.display = 'block';
@@ -53,7 +53,10 @@ function getWord() {
     if ( status != "" ) {
         alert(status);
     } else {
-    	xhttp.open("GET", "/php/smd/findword.php?word=" + word.trim() + "&type=" + selWordType + "&dialect=" + selDialect, true);
+        var result = JSON.parse(meta.getRowMetadata(selWordType, CONST_ID_SEARCH_WIDGETS));
+        var msd = result.msd.replace(/\-/g, "_") + "%";
+        //console.log("getWord: word=" + word.trim() + " original msd=" + result.msd + " msd=" + msd + " dialect=" + result.dialect);
+    	xhttp.open("GET", "/php/smd/findword.php?word=" + word.trim() + "&msd=" + msd + "&dialect=" + result.dialect, true);
     	xhttp.send();
         body.style.cursor = "progress";
     }
@@ -63,7 +66,7 @@ function getWord() {
 function addAddWordWidgets(word) {
     var divAddWord = document.getElementById("divAddWord");
     divAddWord.innerHTML += 'Врста речи:&nbsp;';
-    var ddbWordType = getWordTypeDropDownBox({selected: "N", index:"main"});
+    var ddbWordType = ddbox.getWordType({selected: "N", index:"main"});
     divAddWord.appendChild(ddbWordType);
     divAddWord.innerHTML += '&nbsp;';
 
@@ -80,10 +83,9 @@ function addAddWordWidgets(word) {
 function addNonExistentWord(word) {
     createWordsHeader();
     // Get word type from main word type selector
-    var wordType = document.getElementById("idWordType-main").value;
-    result = getEmptyMSD(wordType);
-    result.wordform = word;
-    result.id = 0;
+    var wordType = document.getElementById("idSelWordType").value;
+    result = getEmptyMSD(wordType, word);
+    console.log("addNonExistentWord: result=" + JSON.stringify(result));
     addWordWidgets(result, 0);
     var hiddChanged = document.getElementById("idChanged-0");
     hiddChanged.value = true;
@@ -132,18 +134,25 @@ function addWordWidgets(result, index) {
     var tblWords = document.getElementById("tblWords");
     rowTr.appendChild( getRowNumber(index) );
     rowTr.appendChild( getColumnWordForm(result.wordform, index) );
-    rowTr.appendChild( getWordMetaWidgets(result, index) );
+    rowTr.appendChild( getColumnWordMetaWidgets(result, index) );
     rowTr.appendChild( getNavButtons(index) );
     tblWords.appendChild( rowTr );
 }
 
+// Get column representing metawidgets for certain word
+function getColumnWordMetaWidgets(result, index) {
+    var tdWordMetadata = document.createElement("td");
+    tdWordMetadata.className = "clsWordMetadata";
+    tdWordMetadata.appendChild(getWordMetaWidgets(result, index));
+    return tdWordMetadata;
+}
 
 // Creates table cell holding a number equivalent to "index+1"
 function getRowNumber(index) {
     var tdRowNumber = document.createElement("td");
     tdRowNumber.id = CONST_TD_COLUMN_ROW_NUMBER_ID + "-" + index;
     tdRowNumber.className = CONST_TR_CLASS_COLUMN_ROW_NUMBER;
-    tdRowNumber.innerHTML = (index+1);
+    tdRowNumber.innerHTML = (index+1); // We need "1" rather than "01"
     return tdRowNumber;
 }
 
@@ -158,7 +167,7 @@ function getColumnWordForm(wordForm, index) {
     inpWordForm.setAttribute("type", "text");
     inpWordForm.setAttribute("maxLength", CONST_MAX_LENGTH_WORDFORM);
     inpWordForm.setAttribute("size", CONST_SIZE_WORDFORM);
-    inpWordForm.setAttribute("onkeypress", "onWordFormChange(this," + index + ")");
+    inpWordForm.setAttribute("onkeydown", "onWordFormChange(this," + index + ")");
 
     var tdWordForm = document.createElement("td");
     tdWordForm.className = "clsColumnWordForm";
@@ -185,67 +194,65 @@ function getWordMetaWidgets(result, index) {
     var wordType;
     var wordMetadata;
     var context = {msd : result.msd, index : index, dbId : result.id};
-    context.onchange = "wordMetaCboxChanged(this," + index + ")";
+    context.onchange = CONST_DROPDOWN_BOX_ONCHANGE_FUNCTION + "(this," + index + ")";
     // See what word type should be added
+    //console.log("getWordMetaWidgets: result=" + JSON.stringify(result));
     if (result === '') {
-        wordType = document.getElementById("idWordType-main").value;
+        wordType = document.getElementById("idSelWordType").value;
     } else {
-        wordType = result.msd.category;
+        wordType = result.msd[0];
     }
 
     switch( wordType ) {
         case CONST_WORD_TYPE_NOUN : // именица
-            wordMetadata = getNounWidgets(context);
+            wordMetadata = meta.getNounWidgets(context);
             break;
         case CONST_WORD_TYPE_PRONOUN : // заменица
-            wordMetadata = getPronounWidgets(context);
+            wordMetadata = meta.getPronounWidgets(context);
             break;
         case CONST_WORD_TYPE_ADJECTIVE : // придев
-            wordMetadata = getAdjectiveWidgets(context);
+            wordMetadata = meta.getAdjectiveWidgets(context);
             break;
         case CONST_WORD_TYPE_NUMERAL : // број
-            wordMetadata = getNumeralWidgets(context);
+            wordMetadata = meta.getNumeralWidgets(context);
             break;
         case CONST_WORD_TYPE_VERB : // глагол
-            wordMetadata = getVerbWidgets(context);
+            wordMetadata = meta.getVerbWidgets(context);
             break;
         case CONST_WORD_TYPE_ADVERB : // прилог
-            wordMetadata = getAdverbWidgets(context);
+            wordMetadata = meta.getAdverbWidgets(context);
             break;
         case CONST_WORD_TYPE_PREPOSITION : // предлог
-            wordMetadata = getPrepositionWidgets(context);
+            wordMetadata = meta.getPrepositionWidgets(context);
             break;
         case CONST_WORD_TYPE_CONJUNCTION : // везник
-            wordMetadata = getConjunctionWidgets(context);
+            wordMetadata = meta.getConjunctionWidgets(context);
             break;
         case CONST_WORD_TYPE_INTERJECTION : // узвик
-            wordMetadata = getInterjectionWidgets(context);
+            wordMetadata = meta.getInterjectionWidgets(context);
             break;
         case CONST_WORD_TYPE_PARTICLE : // речца
-            wordMetadata = getParticleWidgets(context);
+            wordMetadata = meta.getParticleWidgets(context);
             break;
         case CONST_WORD_TYPE_ABBREVIATION : // скраћеница
-            wordMetadata = getAbbreviationWidgets(context);
+            wordMetadata = meta.getAbbreviationWidgets(context);
             break;
         case CONST_WORD_TYPE_RESIDUAL: // остало
-            wordMetadata = getResidualWidgets(context);
+            wordMetadata = meta.getResidualWidgets(context);
             break;
         case CONST_WORD_TYPE_PUNCTUATION : // интерпункција
-            wordMetadata = getPunctuationWidgets(context);
+            wordMetadata = meta.getPunctuationWidgets(context);
             break;
         default:
             alert("Непозната врста речи: " + wordType);
             wordMetadata = document.createElement("div");
             break;
     }
-    var tdWordMetadata = document.createElement("td");
-    tdWordMetadata.className = "clsWordMetadata";
     context.selected = result.dialect;
-    var dialect = getDialectDropDownBox(context);
+    var dialect = ddbox.getDialect(context);
     wordMetadata.innerHTML += ' наречје&nbsp;';
     wordMetadata.appendChild(dialect);
-    tdWordMetadata.appendChild(wordMetadata);
-    return tdWordMetadata;
+    return wordMetadata;
 }
 
 
@@ -295,51 +302,27 @@ function deleteWordRow(row){
 function addWordRow(index) {
     // Get word type from previous row
     var wordType = document.getElementById("idWordType-" + index).value;
-    result = getEmptyMSD(wordType);
+    var result = JSON.parse(meta.getRowMetadata(wordType, index));
     // Add lemma as word form, thus helping operator entering data
     result.wordform = document.getElementById("lemma").value;
+    result.id = 0;
+    console.log("addWordRow: result="+ JSON.stringify(result));
     addWordWidgets(result, index+1);
     var hiddChanged = document.getElementById("idChanged-" + (index+1));
     hiddChanged.value = true;
 }
 
 
-// Construct empty MSD (except word type)
-function getEmptyMSD(wordType) {
-    var txt = '{"id":"0","wordform":"","msd":{"category":"' + wordType + '",';
-
-    switch( wordType ) {
-        case CONST_WORD_TYPE_NOUN :        // именица
-        case CONST_WORD_TYPE_PRONOUN :     // заменица
-        case CONST_WORD_TYPE_ADJECTIVE :   // придев
-        case CONST_WORD_TYPE_NUMERAL :     // број
-        case CONST_WORD_TYPE_VERB :        // глагол
-        case CONST_WORD_TYPE_ADVERB :      // прилог
-        case CONST_WORD_TYPE_CONJUNCTION : // везник
-        case CONST_WORD_TYPE_RESIDUAL:     // остало
-        case CONST_WORD_TYPE_PARTICLE :    // речца
-            txt = txt + '"type":""}';
-            break;
-        case CONST_WORD_TYPE_PREPOSITION : // предлог
-            txt = txt + '"case":""}';
-            break;
-        case CONST_WORD_TYPE_INTERJECTION : // узвик
-        case CONST_WORD_TYPE_ABBREVIATION : // скраћеница
-        case CONST_WORD_TYPE_PUNCTUATION : // интерпункција
-            txt = txt + '"dummy":""}';
-            break;
-        default:
-            alert("Непозната врста речи: " + wordType);
-            txt = "{}";
-            break;
-    }
-    txt = txt + "}";
-    //console.log("Constructed object: "+ txt);
+// Construct empty MSD (except for word type)
+function getEmptyMSD(wordType, word) {
+    var txt = '{"id":"0","wordform":"' + word + '","msd":"' + wordType + '"}';
+    //console.log("getEmptyMSD: "+ txt);
     return JSON.parse(txt);
 }
 
 function onLoad() {
     document.getElementById("divGenerate").style.display = 'none';
+    document.getElementById("idSearchWidgets").innerHTML = '';
 }
 
 
@@ -354,13 +337,28 @@ function delDbRowChanged(checkbox, index) {
 }
 
 function onWordFormChange(textfield, index) {
+    //console.log("onWordFormChange: index " + index);
     var hiddChanged = document.getElementById("idChanged-" + index);
     hiddChanged.value = true;
 }
 
+// Function handles press on ENTER key in field for word search
 function handleEnter(e){
     var keycode = (e.keyCode ? e.keyCode : e.which);
     if (keycode == '13') {
         getWord();
     }
+}
+
+// Fired on change in word type dropdown box, generating search widgets
+function wordTypeSelected(ddbox) {
+    var div = document.getElementById("idSearchWidgets");
+    var w, mw;
+    result = getEmptyMSD(ddbox.value, '');
+    mw = getWordMetaWidgets(result, CONST_ID_SEARCH_WIDGETS);
+    div.innerHTML = mw.innerHTML;
+    w = document.getElementById(CONST_LABEL_WORD_TYPE_ID + "-" + CONST_ID_SEARCH_WIDGETS);
+    w.style.display = 'none';
+    w = document.getElementById("idWordType-" + CONST_ID_SEARCH_WIDGETS);
+    w.style.display = 'none';
 }
