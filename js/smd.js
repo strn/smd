@@ -98,7 +98,7 @@ function addNonExistentWord(word) {
     // See if user picked predefined item
     if (ddboxPredefined.value === "") {
         // Get word type from main word type selector
-        var wordType = document.getElementById("idSelWordType").value;
+        var wordType = document.getElementById("idWordType-main").value;
         result = getEmptyMSD(wordType, word);
         //console.log("addNonExistentWord: result=" + JSON.stringify(result));
         addWordWidgets(result, 0);

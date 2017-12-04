@@ -1,15 +1,22 @@
 // Gathers input as a string
 function gatherInput() {
-    var tbl = document.getElementById("tblWords");
     var msd, wordType, wordForm, id, dialect, index, description, delInDb, hiddChanged, result;
     var output = "=========== ОДАВДЕ КОПИРАТИ ===========\n"; // Gather all output here
     var lemma = document.getElementById("lemma").value;
+    var wordRowIds = document.getElementsByName(CONST_INPUT_WORD_ROW_ID);
 
-    // Skip header, so we start counting rows from 1
-    for (var i = 1; i < tbl.rows.length; i++) {
+    /*for (var i = 0; i < wordRowIds.length; i++) {
+        index = wordRowIds[i].id.split("-")[1]; // id-0, id-1 ...
+        console.log("i=" + i + ", id=" + wordRowIds[i].id + ", index=" + index);
+    }*/
 
+    for (var i = 0; i < wordRowIds.length; i++) {
         // Get word data in current row
-        index = i-1;
+        index = wordRowIds[i].id.split("-")[1]; // id-0, id-1 ...
+        // We must skip widget hidden in row with search widgets
+        if (index == CONST_ID_SEARCH_WIDGETS) {
+            continue;
+        }
         id = document.getElementById("id-" + index).value;
         wordForm = document.getElementById("idWordForm-" + index).value;
         wordType = document.getElementById("idWordType-" + index).value;

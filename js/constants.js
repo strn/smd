@@ -90,6 +90,7 @@ const CONST_OUTPUT_DESCRIPTION = "description";
 const CONST_TR_CLASS_WORD_ROW = "clsWordRow";
 const CONST_TR_CLASS_COLUMN_ROW_NUMBER = "clsColumnRowNumber";
 const CONST_TD_COLUMN_ROW_NUMBER_ID = "idColumnRowNumber";
+const CONST_INPUT_WORD_ROW_ID = "wordId";
 
 // Check box for marking records for deletion in database
 const CONST_CHECKBOX_MARK_DELЕТЕ_ID = "idDelDb";
@@ -105,6 +106,9 @@ const CONST_LABEL_WORD_TYPE_ID = 'idLblWordType';
 const CONST_ID_SEARCH_WIDGETS = 99999;
 
 // Drop down values for predefined items
+const CONST_ID_PREDEFINED_ITEM_COMMON_NOUN_MASCULINE = "nounCommonMasculine";
+const CONST_ID_PREDEFINED_ITEM_COMMON_NOUN_FEMININE = "nounCommonFeminine";
+const CONST_ID_PREDEFINED_ITEM_COMMON_NOUN_NEUTRAL = "nounCommonNeutral";
 const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_MASCULINE = "nounProperMasculine";
 const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_FEMININE = "nounProperFeminine";
 const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_NEUTRAL = "nounProperNeutral";

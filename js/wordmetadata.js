@@ -12,6 +12,10 @@ var meta = (function(){
 		var inpId   = document.createElement("input");
 		inpId.id    = "id-" + context.index;
 		inpId.value = context.dbId;
+		inpId.name  = CONST_INPUT_WORD_ROW_ID;
+		// Need common name for widgets holding row IDs because
+		// multiple additions and removal will screw up rows enough
+		// so that we
 		inpId.type  = "hidden";
 		container.appendChild(inpId);
 		inpId       = document.createElement("input");
