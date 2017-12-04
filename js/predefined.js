@@ -11,6 +11,9 @@ function fillWithPredefinedValues(selection, word) {
         case CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_FEMININE:
             getProperNounFeminineItems(word);
             break;
+        case CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_NEUTRAL:
+            getProperNounNeutralItems(word);
+            break;
         default:
             alert("Избор „" + selection + "“ није имплементиран.");
             break;
@@ -42,6 +45,13 @@ function getProperNounMasculineItems(word) {
         "Npmsv",
         "Npmsi",
         "Npmsl",
+        "Npmpn",
+        "Npmpg",
+        "Npmpd",
+        "Npmpa",
+        "Npmpv",
+        "Npmpi",
+        "Npmpl"
     ];
     getGenericPredefinedItems(msds, word);
 }
@@ -55,6 +65,33 @@ function getProperNounFeminineItems(word) {
         "Npfsv",
         "Npfsi",
         "Npfsl",
+        "Npfpn",
+        "Npfpg",
+        "Npfpd",
+        "Npfpa",
+        "Npfpv",
+        "Npfpi",
+        "Npfpl"
+    ];
+    getGenericPredefinedItems(msds, word);
+}
+
+function getProperNounNeutralItems(word) {
+    var msds = [
+        "Npnsn",
+        "Npnsg",
+        "Npnsd",
+        "Npnsa",
+        "Npnsv",
+        "Npnsi",
+        "Npnsl",
+        "Npnpn",
+        "Npnpg",
+        "Npnpd",
+        "Npnpa",
+        "Npnpv",
+        "Npnpi",
+        "Npnpl"
     ];
     getGenericPredefinedItems(msds, word);
 }

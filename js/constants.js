@@ -107,5 +107,6 @@ const CONST_ID_SEARCH_WIDGETS = 99999;
 // Drop down values for predefined items
 const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_MASCULINE = "nounProperMasculine";
 const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_FEMININE = "nounProperFeminine";
+const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_NEUTRAL = "nounProperNeutral";
 
 const CONST_DDBOX_ID_PREDEFINED_ITEMS = "idPredefinedItems";

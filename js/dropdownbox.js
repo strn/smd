@@ -354,7 +354,8 @@ var ddbox = (function() {
 		context.options = [
 			"", "",
 			CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_MASCULINE, "Властита именица мушког рода",
-			CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_FEMININE, "Властита именица женског рода"
+			CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_FEMININE, "Властита именица женског рода",
+			CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_NEUTRAL, "Властита именица средњег рода"
 		];
 		context.index = CONST_ID_SEARCH_WIDGETS;
 		context.id = CONST_DDBOX_ID_PREDEFINED_ITEMS + "-" + context.index;
