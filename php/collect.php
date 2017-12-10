@@ -14,9 +14,9 @@
 	function get_insert_statement($str) {
 		$strArray = explode(CONST_SYMBOL_PIPE, $str);
 		if ($strArray[4] != '') {
-			$ret = "INSERT INTO words (wordform, lemma, msd, source, dialect) VALUES ('";
+			$ret = "INSERT INTO words (wordform, lemma, msd, source, dialect, contributed) VALUES ('";
 		} else {
-			$ret = "INSERT INTO words (wordform, lemma, msd, source) VALUES ('";
+			$ret = "INSERT INTO words (wordform, lemma, msd, source, contributed) VALUES ('";
 		}
 		$ret = $ret . $strArray[1] . "', '";
 		$ret = $ret . $strArray[2] . "', '";
@@ -24,7 +24,7 @@
 		if ($strArray[4] != '') {
 			$ret = $ret . ", '" . $strArray[4] . "'";
 		}
-		$ret = $ret . ");" . CONST_NL;
+		$ret = $ret . ", TRUE);" . CONST_NL;
 		return $ret;
 	}
 
