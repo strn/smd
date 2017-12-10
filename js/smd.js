@@ -75,8 +75,10 @@ function getWord() {
 function addAddWordWidgets(word) {
     var divAddWord = document.getElementById("divAddWord");
     divAddWord.innerHTML += 'Врста речи&nbsp;';
-    var ddbWordType = ddbox.getWordType({selected: "N", index:"main"});
+    var ddbWordType = ddbox.getWordType({selected: "", index:"main", onchange:"fillDdboxWithPredefined(this)"});
     divAddWord.appendChild(ddbWordType);
+    divAddWord.innerHTML += '&nbsp;Раније дефинисане ставке&nbsp;';
+    divAddWord.appendChild(ddbox.getPredefinedItems());
     divAddWord.innerHTML += '&nbsp;';
 
     var btnAddWord = document.createElement("input");
@@ -85,9 +87,13 @@ function addAddWordWidgets(word) {
     btnAddWord.value = " Додај ";
     btnAddWord.setAttribute( "onclick", "addNonExistentWord('" + word +"')" );
     divAddWord.appendChild(btnAddWord);
-    divAddWord.innerHTML += '&nbsp;Раније дефинисане ставке&nbsp;';
+}
 
-    divAddWord.appendChild(ddbox.getPredefinedItems());
+
+// Fills list of predefined word item based on main word type selector
+function fillDdboxWithPredefined(dropdown) {
+    var ddboxPredefined = document.getElementById(CONST_DDBOX_ID_PREDEFINED_ITEMS + "-" + CONST_ID_SEARCH_WIDGETS);
+    ddbox.fillWithPredefinedWordValues(ddboxPredefined, dropdown.value);
 }
 
 
@@ -104,9 +110,9 @@ function addNonExistentWord(word) {
         addWordWidgets(result, 0);
         var hiddChanged = document.getElementById("idChanged-0");
         hiddChanged.value = true;
-
     } else {
-        fillWithPredefinedValues(ddboxPredefined.value, word);
+        console.log("addNonExistentWord: ddboxPredefined.value=" + ddboxPredefined.value);
+        pred.fillWithPredefinedValues(ddboxPredefined.value, word);
     }
     disableNewWordFields();
     document.getElementById("divGenerate").style.display = 'block';
@@ -134,6 +140,9 @@ function createWordsHeader() {
     th.innerHTML = "Изведена реч";
     tr.appendChild(th);
     th = document.createElement("th");
+    th.innerHTML = "Одредница";
+    tr.appendChild(th);
+    th = document.createElement("th");
     th.innerHTML = "Метаподаци";
     tr.appendChild(th);
     th = document.createElement("th");
@@ -152,7 +161,8 @@ function addWordWidgets(result, index) {
     // Assemble row together
     var tblWords = document.getElementById("tblWords");
     rowTr.appendChild( getRowNumber(index) );
-    rowTr.appendChild( getColumnWordForm(result.wordform, index) );
+    rowTr.appendChild( getColumnWord(result.wordform, "WordForm", index) );
+    rowTr.appendChild( getColumnWord(result.lemma, "Lemma", index) );
     rowTr.appendChild( getColumnWordMetaWidgets(result, index) );
     rowTr.appendChild( getNavButtons(index) );
     tblWords.appendChild( rowTr );
@@ -177,21 +187,21 @@ function getRowNumber(index) {
 
 
 // Adds one row to table with words
-function getColumnWordForm(wordForm, index) {
+function getColumnWord(word, classSuffix, index) {
 
-    var inpWordForm = document.createElement("input");
-    inpWordForm.className = "clsInputWordForm";
-    inpWordForm.id = "idWordForm-" + index;
-    inpWordForm.value = wordForm;
-    inpWordForm.setAttribute("type", "text");
-    inpWordForm.setAttribute("maxLength", CONST_MAX_LENGTH_WORDFORM);
-    inpWordForm.setAttribute("size", CONST_SIZE_WORDFORM);
-    inpWordForm.setAttribute("onkeydown", "onWordFormChange(this," + index + ")");
+    var inpWord = document.createElement("input");
+    inpWord.className = "clsInput" + classSuffix;
+    inpWord.id = "id" + classSuffix + "-" + index;
+    inpWord.value = word;
+    inpWord.setAttribute("type", "text");
+    inpWord.setAttribute("maxLength", CONST_MAX_LENGTH_WORDFORM);
+    inpWord.setAttribute("size", CONST_SIZE_WORDFORM);
+    inpWord.setAttribute("onkeydown", "onWordChange(this," + index + ")");
 
-    var tdWordForm = document.createElement("td");
-    tdWordForm.className = "clsColumnWordForm";
-    tdWordForm.appendChild(inpWordForm);
-    return tdWordForm;
+    var tdWord = document.createElement("td");
+    tdWord.className = "clsColumn" + classSuffix;
+    tdWord.appendChild(inpWord);
+    return tdWord;
 }
 
 
@@ -323,14 +333,13 @@ function addWordRow(index) {
     var wordType = document.getElementById("idWordType-" + index).value;
     var result = JSON.parse(meta.getRowMetadata(wordType, index));
     // Add lemma as word form, thus helping operator entering data
-    result.wordform = document.getElementById("lemma").value;
+    result.lemma = document.getElementById("lemma").value;
+    result.wordform = result.lemma;
     result.id = 0;
     //console.log("addWordRow: result="+ JSON.stringify(result));
     // Add row with index equal to number of rows in table
     var tableRows = document.getElementById("tblWords").rows.length-1;
-    //addWordWidgets(result, index+1);
     addWordWidgets(result, tableRows);
-    //var hiddChanged = document.getElementById("idChanged-" + (index+1));
     var hiddChanged = document.getElementById("idChanged-" + tableRows);
     hiddChanged.value = true;
 }
@@ -338,7 +347,7 @@ function addWordRow(index) {
 
 // Construct empty MSD (except for word type)
 function getEmptyMSD(wordType, word) {
-    var txt = '{"id":"0","wordform":"' + word + '","msd":"' + wordType + '"}';
+    var txt = '{"id":"0","wordform":"' + word + '","lemma":"' + word + '","msd":"' + wordType + '"}';
     //console.log("getEmptyMSD: "+ txt);
     return JSON.parse(txt);
 }
@@ -359,7 +368,7 @@ function delDbRowChanged(checkbox, index) {
     }
 }
 
-function onWordFormChange(textfield, index) {
+function onWordChange(textfield, index) {
     //console.log("onWordFormChange: index " + index);
     var hiddChanged = document.getElementById("idChanged-" + index);
     hiddChanged.value = true;

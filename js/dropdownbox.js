@@ -40,6 +40,22 @@ var ddbox = (function() {
 		return sel;
 	}; // make
 
+	my.fillExistingWithItems = function(ddbox, context) {
+		ddbox.innerHTML = '';
+		if (typeof context.options !== CONST_UNDEFINED) {
+			for (var i = 0; i < context.options.length; i+=2) {
+			    var option = document.createElement("option");
+			    option.value = context.options[i];
+			    if (typeof context.selected !== CONST_UNDEFINED && option.value === context.selected) {
+			    	option.setAttribute('selected', 'selected');
+			    	//console.log("Selected option " + selElem + " for option.value=" + option.value + " and text=" + optArray[i+1]);
+			    }
+			    option.text = context.options[i+1];
+			    ddbox.appendChild(option);
+			}
+		}
+	};
+
 	// Adds some classes to generic drop-down box
 	my.getGeneric = function(context) {
 		if (context.classes !== CONST_UNDEFINED) {
@@ -348,21 +364,121 @@ var ddbox = (function() {
 		hiddChanged.value = true;
 	};
 
-	// Creates drop-down box with predefined items
+	// Creates drop-down box that should hold predefined items
 	my.getPredefinedItems = function() {
 		var context = {};
 		context.options = [
-			"", "",
-			CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_MASCULINE, "Именица властита мушког рода",
-			CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_FEMININE,  "Именица властита женског рода",
-			CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_NEUTRAL,   "Именица властита средњег рода",
-			CONST_ID_PREDEFINED_ITEM_COMMON_NOUN_MASCULINE, "Именица заједничка мушког рода",
-			CONST_ID_PREDEFINED_ITEM_COMMON_NOUN_FEMININE,  "Именица заједничка женског рода",
-			CONST_ID_PREDEFINED_ITEM_COMMON_NOUN_NEUTRAL,   "Именица заједничка средњег рода"
+			"", ""
 		];
 		context.index = CONST_ID_SEARCH_WIDGETS;
 		context.id = CONST_DDBOX_ID_PREDEFINED_ITEMS + "-" + context.index;
 		return my.getGeneric(context);
+	};
+
+
+	// Fills dropdown box with predefined noun items
+	my.fillPredefinedNounItems = function(ddbox) {
+		context = {};
+		context.options = [
+			"", "",
+			"nounProperMasculine", "Именица властита мушког рода",
+			"nounProperFeminine",  "Именица властита женског рода",
+			"nounProperNeutral",   "Именица властита средњег рода",
+			"nounCommonMasculine", "Именица заједничка мушког рода",
+			"nounCommonFeminine",  "Именица заједничка женског рода",
+			"nounCommonNeutral",   "Именица заједничка средњег рода"
+		];
+		my.fillExistingWithItems(ddbox, context);
+	};
+
+
+	// Fills dropdown box with predefined pronoun items
+	my.fillPredefinedPronounItems = function(ddbox) {
+		context = {};
+		context.options = [
+			"", ""
+		];
+		my.fillExistingWithItems(ddbox, context);
+	};
+
+
+	// Fills dropdown box with predefined adjective items
+	my.fillPredefinedAdjectiveItems = function(ddbox) {
+		context = {};
+		context.options = [
+			"", "",
+			"adjectiveGeneralPositiveMasculine",    "Придев описни мушког рода, позитив",
+			"adjectiveGeneralComparativeMasculine", "Придев описни мушког рода, компаратив",
+			"adjectiveGeneralSuperlativeMasculine", "Придев описни мушког рода, суперлатив",
+
+			"adjectiveGeneralPositiveFeminine",     "Придев описни женског рода, позитив",
+			"adjectiveGeneralComparativeFeminine",  "Придев описни женског рода, компаратив",
+			"adjectiveGeneralSuperlativeFeminine",  "Придев описни женског рода, суперлатив",
+
+			"adjectiveGeneralPositiveNeutral",      "Придев описни средњег рода, позитив",
+			"adjectiveGeneralComparativeNeutral",   "Придев описни средњег рода, компаратив",
+			"adjectiveGeneralSuperlativeNeutral",   "Придев описни средњег рода, суперлатив",
+
+			"adjectivePossesiveMasculinePositive",    "Придев присвојни мушког рода, позитив",
+			"adjectivePossesiveMasculineComparative", "Придев присвојни мушког рода, компаратив",
+			"adjectivePossesiveMasculineSuperlative", "Придев присвојни мушког рода, суперлатив",
+
+			"adjectivePossessiveFemininePositive",    "Придев присвојни женског рода, позитив",
+			"adjectivePossessiveFeminineComparative", "Придев присвојни женског рода, компаратив",
+			"adjectivePossessiveFeminineSuperlative", "Придев присвојни женског рода, суперлатив",
+
+			"adjectivePossessiveNeutralPositive",    "Придев присвојни средњег рода, позитив",
+			"adjectivePossessiveNeutralComparative", "Придев присвојни средњег рода, компаратив",
+			"adjectivePossessiveNeutralSuperlative", "Придев присвојни средњег рода, суперлатив"
+		];
+		my.fillExistingWithItems(ddbox, context);
+	};
+
+
+	// Fills dropdown box with predefined numeral items
+	my.fillPredefinedNumeralItems = function(ddbox) {
+		context = {};
+		context.options = [
+			"", ""
+		];
+		my.fillExistingWithItems(ddbox, context);
+	};
+
+
+	// Fills dropdown box with predefined verb items
+	my.fillPredefinedVerbItems = function(ddbox) {
+		context = {};
+		context.options = [
+			"", ""
+		];
+		my.fillExistingWithItems(ddbox, context);
+	};
+
+
+	// Fills existing drop-down box with predefined word items
+	// calling appropriate functions
+	my.fillWithPredefinedWordValues = function(ddbox, wordType) {
+		switch(wordType) {
+		case CONST_WORD_TYPE_NOUN:
+			my.fillPredefinedNounItems(ddbox);
+			break;
+		case CONST_WORD_TYPE_PRONOUN:
+			my.fillPredefinedPronounItems(ddbox);
+			break;
+		case CONST_WORD_TYPE_ADJECTIVE:
+			my.fillPredefinedAdjectiveItems(ddbox);
+			break;
+		case CONST_WORD_TYPE_NUMERAL:
+			my.fillPredefinedNumeralItems(ddbox);
+			break;
+		case CONST_WORD_TYPE_VERB:
+			my.fillPredefinedVerbItems(ddbox);
+			break;
+		default:
+			// Just remove whatever is there
+			ddbox.innerHTML = '';
+			break;
+		}
 	};
 
 	return my;

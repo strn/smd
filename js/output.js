@@ -1,8 +1,7 @@
 // Gathers input as a string
 function gatherInput() {
-    var msd, wordType, wordForm, id, dialect, index, description, delInDb, hiddChanged, result;
+    var msd, wordType, wordForm, id, dialect, index, description, delInDb, hiddChanged, result, lemma;
     var output = "=========== ОДАВДЕ КОПИРАТИ ===========\n"; // Gather all output here
-    var lemma = document.getElementById("lemma").value;
     var wordRowIds = document.getElementsByName(CONST_INPUT_WORD_ROW_ID);
 
     /*for (var i = 0; i < wordRowIds.length; i++) {
@@ -19,6 +18,7 @@ function gatherInput() {
         }
         id = document.getElementById("id-" + index).value;
         wordForm = document.getElementById("idWordForm-" + index).value;
+        lemma = document.getElementById("idLemma-" + index).value;
         wordType = document.getElementById("idWordType-" + index).value;
         delInDb = document.getElementById(CONST_CHECKBOX_MARK_DELЕТЕ_ID + "-" + index).checked;
         hiddChanged = document.getElementById("idChanged-" + index).value;

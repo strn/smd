@@ -5,7 +5,7 @@ const CONST_UNDEFINED = "undefined";
 const CONST_MAX_LENGTH_LEMMA = 64;
 const CONST_MAX_LENGTH_WORDFORM = 64;
 const CONST_SIZE_LEMMA = 32;
-const CONST_SIZE_WORDFORM = 32;
+const CONST_SIZE_WORDFORM = 20;
 
 // Word types
 const CONST_WORD_TYPE_NOUN         = "N"; // Noun
@@ -105,12 +105,11 @@ const CONST_LABEL_DEL_DB_STYLE_HIGHLIGHT = "background-color: red; color: white;
 const CONST_LABEL_WORD_TYPE_ID = 'idLblWordType';
 const CONST_ID_SEARCH_WIDGETS = 99999;
 
-// Drop down values for predefined items
-const CONST_ID_PREDEFINED_ITEM_COMMON_NOUN_MASCULINE = "nounCommonMasculine";
-const CONST_ID_PREDEFINED_ITEM_COMMON_NOUN_FEMININE = "nounCommonFeminine";
-const CONST_ID_PREDEFINED_ITEM_COMMON_NOUN_NEUTRAL = "nounCommonNeutral";
-const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_MASCULINE = "nounProperMasculine";
-const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_FEMININE = "nounProperFeminine";
-const CONST_ID_PREDEFINED_ITEM_PROPER_NOUN_NEUTRAL = "nounProperNeutral";
+// General adjectives
+
+// Possessive adjectives
+const CONST_ID_PREDEFINED_ITEM_ADJECTIVE_POSSESSIVE_POSITIVE_MASCULINE = "adjectivePossessiveMasculine";
+const CONST_ID_PREDEFINED_ITEM_ADJECTIVE_POSSESSIVE_POSITIVE_FEMININE  = "adjectivePossessiveFeminine";
+const CONST_ID_PREDEFINED_ITEM_ADJECTIVE_POSSESSIVE_POSITIVE_NEUTRAL   = "adjectivePossessiveNeutral";
 
 const CONST_DDBOX_ID_PREDEFINED_ITEMS = "idPredefinedItems";

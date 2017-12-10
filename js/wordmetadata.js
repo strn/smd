@@ -247,7 +247,7 @@ var meta = (function(){
 	my.getAdjectiveWidgets = function(context) {
 		return my.getGenericMSDWidgets(context,
 			{	1 : [ ddbox.getAdjectiveType, "тип" ], 2 : [ ddbox.getAdjectiveDegree, "степен" ], 3 : [ ddbox.getGender, "род" ],
-				4 : [ ddbox.getNumber, "број" ], 5 : [ ddbox.getCase, "падеж"], 6 : [ ddbox.getDefiniteness, "одређеност" ],
+				4 : [ ddbox.getNumber, "број" ], 5 : [ ddbox.getCase, "падеж"], 6 : [ ddbox.getDefiniteness, "вид" ],
 				7 : [ ddbox.getAnimate, "особина" ]	}
 		);
 	};
