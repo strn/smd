@@ -48,7 +48,7 @@ const CONST_DEGREE_SUPERLATIVE = "s";
 // Dialect
 const CONST_DIALECT_EKAVIAN  = "e";
 const CONST_DIALECT_IEKAVIAN = "i";
-const CONST_DIALECT_ALL      = "";
+const CONST_DIALECT_ALL      = "s";
 
 // Noun types
 const CONST_NOUN_TYPE_COMMON     = "c"; // заједничка именица
