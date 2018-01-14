@@ -18,7 +18,7 @@
 				font-size: 130%;
 				font-family: inherit;
 			}
-			input {
+			input, select {
 				font-size: 110%;
 				font-family: inherit;
 			}
@@ -127,7 +127,7 @@
 	<body>
 		<h1>Језички алат - провера правописа</h1>
 		<br/>
-		<p>Ово је страница за проверу правописа помоћу програма <a href="http://www.languagetool.org">Језички алат</a> за српски језик. Правопис других језика можете да проверите <a href="http://www.languagetool.org">овде</a>.<br/><br/><strong>Напомена:</strong> Програм ће обрадити само текстове писане <a href="https://sr.wikipedia.org/sr-ec/Српска_ћирилица">српском ћирилицом</a> и <i>екавским</i> наречјем. Уколико је ваш текст писан такозваном „српском латиницом“ можете га претходно пресловити <a href="http://www.preslovi.re.rs/">овде</a> или <a href="http://www.preslovljavanje.com">овде</a>.</p>
+		<p>Ово је страница за проверу правописа помоћу програма <a href="http://www.languagetool.org">Језички алат</a> за српски језик. Правопис других језика можете да проверите <a href="http://www.languagetool.org">овде</a>.<br/><br/><strong>Напомена:</strong> Програм ће обрадити само текстове писане <a href="https://sr.wikipedia.org/sr-ec/Српска_ћирилица">српском ћирилицом</a> и <i>екавским</i> изговором. Уколико је ваш текст писан такозваном „српском латиницом“ можете га претходно пресловити <a href="http://www.preslovi.re.rs/">овде</a> или <a href="http://www.preslovljavanje.com">овде</a>.</p>
 
 		<form name="checkform" action="#" method="post">
 			<p id="checktextpara">
@@ -135,10 +135,15 @@
 Унесите овде ваш текст, а затим кликните на дугме „Проверити текст“.
 				</textarea>
 			</p>
+			<select id="lang" name="lang">
+				<option value="sr-BA">Српски (БиХ)</option>
+				<option value="sr-HR">Српски (Хрватска)</option>
+				<option value="sr-ME">Српски (Црна Гора)</option>
+				<option value="sr-RS" selected="selected">Српски (Србија)</option>
+			</select>
 			<div id="provera">
 				<input type="submit" name="_action_checkText" value="Проверити текст" onClick="doit(); return false;">
 			</div>
-			<input type="hidden" name="lang" value="sr" />
 			<br/>
 			<div id="feedbackErrorMessage"></div>
 			<div id="feedbackMessage"></div>

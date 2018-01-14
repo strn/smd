@@ -5,18 +5,29 @@
 	define("CONST_SYMBOL_PIPE", "|");
 	define('SCRIPT_NAME', 'collect.php');
 
-	function get_delete_statement($str) {
+	// Determines table name for dynamically created SQL statements
+	function get_table_name($type) {
+		if ($type === 'm') {
+			return "multiwords";
+		} else {
+			return "words";
+		}
+	}
+
+	function get_delete_statement($str, $type) {
+		$table = get_table_name($type);
 		$strArray = explode(" ", $str);
-		return "DELETE FROM words WHERE id = " . $strArray[1] . ";" . CONST_NL;
+		return "DELETE FROM " . $table . " WHERE id = " . $strArray[1] . ";" . CONST_NL;
 	}
 
 
-	function get_insert_statement($str) {
+	function get_insert_statement($str, $type) {
 		$strArray = explode(CONST_SYMBOL_PIPE, $str);
+		$table = get_table_name($type);
 		if ($strArray[4] != '') {
-			$ret = "INSERT INTO words (wordform, lemma, msd, source, dialect, contributed) VALUES ('";
+			$ret = "INSERT INTO " . $table . " (wordform, lemma, msd, source, dialect, contributed) VALUES ('";
 		} else {
-			$ret = "INSERT INTO words (wordform, lemma, msd, source, contributed) VALUES ('";
+			$ret = "INSERT INTO " . $table . " (wordform, lemma, msd, source, contributed) VALUES ('";
 		}
 		$ret = $ret . $strArray[1] . "', '";
 		$ret = $ret . $strArray[2] . "', '";
@@ -28,9 +39,10 @@
 		return $ret;
 	}
 
-	function get_update_statement($str) {
+	function get_update_statement($str, $type) {
 		$strArray = explode(CONST_SYMBOL_PIPE, $str);
-		$ret = "UPDATE words SET wordform = '";
+		$table = get_table_name($type);
+		$ret = "UPDATE " . $table ." SET wordform = '";
 		$ret = $ret . $strArray[1] . "', lemma = '";
 		$ret = $ret . $strArray[2] . "', msd = '";
 		$ret = $ret . $strArray[3] . "'";
@@ -42,6 +54,7 @@
 		return $ret;
 	}
 
+	// Main program
 
 	$method = $_SERVER['REQUEST_METHOD'] ?? '';
 	if ($method == '') {
@@ -56,6 +69,7 @@
 			case 'POST':
 				$data = $_POST['data'] ?? '';
 				$lemma = $_POST['lemma'] ?? '';
+				$type = $_POST['type'] ?? '';
 				break;
 			default:
 				echo 'Unknown request method $method, aborting ...' . CONST_NL;
@@ -64,14 +78,29 @@
 		}
 	}
 	if ($data == '') {
-		echo "Form attribute 'data' was not defined, aborting." . CONST_NL;
-		error_log(SCRIPT_NAME . "Form attribute 'data' was not defined, aborting.");
+		$msg = "Form attribute 'data' was not defined, aborting.";
+		echo $msg . CONST_NL;
+		error_log(SCRIPT_NAME . $msg);
 		return;
 	}
 	if ($lemma == '') {
-		echo "Form attribute 'lemma' was not defined, aborting." . CONST_NL;
-		error_log(SCRIPT_NAME . ": Form attribute 'lemma' was not defined, aborting.");
+		$msg = "Form attribute 'lemma' was not defined, aborting.";
+		echo $msg . CONST_NL;
+		error_log(SCRIPT_NAME . $msg);
 		return;
+	}
+	if ($type == '') {
+		$msg = "Form attribute 'type' was not defined, aborting.";
+		echo $msg . CONST_NL;
+		error_log(SCRIPT_NAME . $msg);
+		return;
+	} else {
+		// Read appropriate configuration
+		if ($type == 'm') {
+			$config = $config_multi_words;
+		} else {
+			$config = $config_single_word;
+		}
 	}
 
 	$strArray = explode(CONST_NL_DELIMITER, $data);
@@ -91,24 +120,26 @@
 				break;
 			case 48:
 				// Insert statement
-				$out = $out . get_insert_statement($str);
+				$out = $out . get_insert_statement($str, $type);
 				break;
 			case 208:
 				// Брисати (delete)
-				$out = $out . get_delete_statement($str);
+				$out = $out . get_delete_statement($str, $type);
 				break;
 			default:
-				$out = $out . get_update_statement($str);
+				$out = $out . get_update_statement($str, $type);
 				break;
 		}
 	}
 	unset($str);
+	//error_log("SQL script: " . $out);
+
 	if ($out != '') {
 		// Encode all in UTF-8 and send as email
 		$subj = sprintf($config['mail_subject'], $lemma, $_SERVER['REMOTE_ADDR'], gethostbyaddr($_SERVER['REMOTE_ADDR']));
 		$subject = "=?UTF-8?B?" . base64_encode($subj) . "?=";
 		$headers = "MIME-Version: 1.0" . "\r\n" . "Content-type: text/plain; charset=UTF-8" . "\r\n";
-		mail($config['mail_recipient'], $subject, $out, $headers);
+		mail($config_common['mail_recipient'], $subject, $out, $headers);
 	}
 	echo $out . CONST_NL;
 ?>

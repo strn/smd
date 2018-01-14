@@ -46,11 +46,11 @@ function gatherInput() {
 function getDialectVerbal(dialect, index) {
     var dialectText = meta.getDialect(CONST_OUTPUT_DESCRIPTION, index);
     if (dialect === CONST_DIALECT_ALL) {
-        return dialectText + " наречја";
+        return dialectText + " изговори";
     } else if (dialect === CONST_DIALECT_EKAVIAN || dialect === CONST_DIALECT_IEKAVIAN) {
-        return dialectText + " наречјe";
+        return dialectText + " изговор";
     } else {
-        return "Непознати дијалект";
+        return "Непознати изговор";
     }
 }
 
@@ -63,7 +63,7 @@ function displayEntries() {
 }
 
 
-function sendEntries() {
+function sendEntries(entryType) {
 
     var xhttp = new XMLHttpRequest();
     var preOutputText = document.getElementById("preOutput").innerHTML;
@@ -85,6 +85,6 @@ function sendEntries() {
     } else {
         xhttp.open("POST", "/php/smd/collect.php", true);
         xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhttp.send("data=" + preOutputText + "&lemma=" + lemma);
+        xhttp.send("data=" + preOutputText + "&lemma=" + lemma + "&type=" + entryType);
     }
 }

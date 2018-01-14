@@ -1,1 +1,1 @@
-\copy (SELECT * FROM ijekavski) TO 'ijekavski.txt';
+\copy (SELECT * FROM ijekavski_vw) TO 'ijekavski.txt';

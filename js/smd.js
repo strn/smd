@@ -1,6 +1,6 @@
 // Gets word from database
 
-function getWord() {
+function getWord(searchType) {
 
     var xhttp = new XMLHttpRequest();
     var resultMessage = document.getElementById("resultMessage");
@@ -51,8 +51,9 @@ function getWord() {
 		}
         preOutput.innerHTML = '';
     };
+
     // Perform minimal validation
-    var status = validateWord(word);
+    var status = validateWord(word, searchType);
     if ( status != "" ) {
         alert(status);
     } else {
@@ -65,11 +66,15 @@ function getWord() {
         //console.log("result: " + JSON.stringify(result));
         var msd = result.msd.replace(/\-/g, "_") + "%";
         //console.log("getWord: word=" + word.trim() + " original msd=" + result.msd + " msd=" + msd + " dialect=" + result.dialect);
-    	xhttp.open("GET", "/php/smd/findword.php?word=" + word.trim() + "&msd=" + msd + "&dialect=" + result.dialect, true);
+        if (searchType !== 'm') {
+            searchType = 's';
+        }
+    	xhttp.open("GET", "/php/smd/findword.php?word=" + word.trim() + "&msd=" + msd + "&dialect=" + result.dialect + "&search=" + searchType, true);
     	xhttp.send();
         body.style.cursor = "progress";
     }
 }
+
 
 // Creates widgets for adding word
 function addAddWordWidgets(word) {
@@ -279,7 +284,7 @@ function getWordMetaWidgets(result, index) {
     }
     context.selected = result.dialect;
     var dialect = ddbox.getDialect(context);
-    wordMetadata.innerHTML += ' наречје&nbsp;';
+    wordMetadata.innerHTML += ' изговор&nbsp;';
     wordMetadata.appendChild(dialect);
     return wordMetadata;
 }
@@ -375,10 +380,14 @@ function onWordChange(textfield, index) {
 }
 
 // Function handles press on ENTER key in field for word search
-function handleEnter(e){
+function handleEnter(e, searchType){
     var keycode = (e.keyCode ? e.keyCode : e.which);
     if (keycode == '13') {
-        getWord();
+        if (searchType === 'm') {
+
+        } else {
+            getWord();
+        }
     }
 }
 

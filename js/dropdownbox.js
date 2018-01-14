@@ -350,9 +350,9 @@ var ddbox = (function() {
 	// Returns drop-down box with dialects
 	my.getDialect = function(context) {
 		context.options = [
-			CONST_DIALECT_ALL, "оба",
-			CONST_DIALECT_EKAVIAN, "екавско",
-			CONST_DIALECT_IEKAVIAN, "ијекавско"];
+			CONST_DIALECT_ALL, "сви",
+			CONST_DIALECT_EKAVIAN, "екавски",
+			CONST_DIALECT_IEKAVIAN, "ијекавски"];
 		context.classes = "clsDialectDropDownBox";
 		context.id = "idDialect-" + context.index;
 		return my.getGeneric(context);
@@ -407,17 +407,17 @@ var ddbox = (function() {
 		context = {};
 		context.options = [
 			"", "",
-			"adjectiveGeneralPositiveMasculine",    "Придев описни мушког рода, позитив",
-			"adjectiveGeneralComparativeMasculine", "Придев описни мушког рода, компаратив",
-			"adjectiveGeneralSuperlativeMasculine", "Придев описни мушког рода, суперлатив",
+			"adjectiveGeneralPositiveMasculine",      "Придев описни мушког рода, позитив",
+			"adjectiveGeneralComparativeMasculine",   "Придев описни мушког рода, компаратив",
+			"adjectiveGeneralSuperlativeMasculine",   "Придев описни мушког рода, суперлатив",
 
-			"adjectiveGeneralPositiveFeminine",     "Придев описни женског рода, позитив",
-			"adjectiveGeneralComparativeFeminine",  "Придев описни женског рода, компаратив",
-			"adjectiveGeneralSuperlativeFeminine",  "Придев описни женског рода, суперлатив",
+			"adjectiveGeneralPositiveFeminine",       "Придев описни женског рода, позитив",
+			"adjectiveGeneralComparativeFeminine",    "Придев описни женског рода, компаратив",
+			"adjectiveGeneralSuperlativeFeminine",    "Придев описни женског рода, суперлатив",
 
-			"adjectiveGeneralPositiveNeutral",      "Придев описни средњег рода, позитив",
-			"adjectiveGeneralComparativeNeutral",   "Придев описни средњег рода, компаратив",
-			"adjectiveGeneralSuperlativeNeutral",   "Придев описни средњег рода, суперлатив",
+			"adjectiveGeneralPositiveNeutral",        "Придев описни средњег рода, позитив",
+			"adjectiveGeneralComparativeNeutral",     "Придев описни средњег рода, компаратив",
+			"adjectiveGeneralSuperlativeNeutral",     "Придев описни средњег рода, суперлатив",
 
 			"adjectivePossesiveMasculinePositive",    "Придев присвојни мушког рода, позитив",
 			"adjectivePossesiveMasculineComparative", "Придев присвојни мушког рода, компаратив",
@@ -427,9 +427,9 @@ var ddbox = (function() {
 			"adjectivePossessiveFeminineComparative", "Придев присвојни женског рода, компаратив",
 			"adjectivePossessiveFeminineSuperlative", "Придев присвојни женског рода, суперлатив",
 
-			"adjectivePossessiveNeutralPositive",    "Придев присвојни средњег рода, позитив",
-			"adjectivePossessiveNeutralComparative", "Придев присвојни средњег рода, компаратив",
-			"adjectivePossessiveNeutralSuperlative", "Придев присвојни средњег рода, суперлатив"
+			"adjectivePossessiveNeutralPositive",     "Придев присвојни средњег рода, позитив",
+			"adjectivePossessiveNeutralComparative",  "Придев присвојни средњег рода, компаратив",
+			"adjectivePossessiveNeutralSuperlative",  "Придев присвојни средњег рода, суперлатив"
 		];
 		my.fillExistingWithItems(ddbox, context);
 	};

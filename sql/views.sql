@@ -1,11 +1,12 @@
 CREATE OR REPLACE VIEW ijekavski_vw AS
- SELECT words.wordform,
-    words.lemma
+ SELECT 'UPDATE words SET words.lemma = ''' || words.lemma || ''', words.wordform=''' || words.wordform ||
+        ''', words.dialect = ''i'' WHERE words.id=' || words.id || ';' AS update_sql
    FROM words
-  WHERE words.lemma LIKE '%је%'
-ORDER BY 2;
+  -- WHERE words.lemma LIKE '%ије%' OR words.wordform LIKE '%ије%'
+  WHERE words.lemma LIKE '%ије%' OR words.wordform LIKE '%ије%'
+ORDER BY words.lemma, words.wordform;
 
-COMMENT ON VIEW ijekavski_vw IS 'Речи које у себи садрже групу "-је-" и тиме могу бити ијекавске';
+COMMENT ON VIEW ijekavski_vw IS 'Речи које у себи садрже групу "-ије-" и тиме могу бити ијекавске';
 
 CREATE OR REPLACE VIEW ekavian_synth_dict_vw AS
 	SELECT words.wordform, words.lemma, words.msd, words.frequency
@@ -117,4 +118,11 @@ CREATE OR REPLACE VIEW sve_retchce_vw AS
    WHERE words.msd LIKE 'Q%'
   ORDER BY words.lemma, words.wordform;
 
-COMMENT ON VIEW sve_retchce_vw IS 'Сви речце у речнику';
+COMMENT ON VIEW sve_retchce_vw IS 'Свe речце у речнику';
+
+CREATE OR REPLACE VIEW multiwords_vw AS
+  SELECT multiwords.wordform, multiwords.msd
+    FROM multiwords
+ORDER BY multiwords.wordform;
+
+COMMENT ON VIEW multiwords_vw IS 'Сложене речи';
